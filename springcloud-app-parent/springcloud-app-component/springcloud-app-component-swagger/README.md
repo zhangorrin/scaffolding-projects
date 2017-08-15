@@ -75,5 +75,5 @@ public class UserController {
 需要注意的是：
 
 ApiImplicitParam这个注解不只是注解，还会影响运行期的程序，例子如下：
- ![Alt text](/img/1.png)
+ ![Alt text](./img/1.png)
 如果ApiImplicitParam中的phone的paramType是query的话，是无法注入到rest路径中的，而且如果是path的话，是不需要配置ApiImplicitParam的，即使配置了，其中的value="手机号"也不会在swagger-ui展示出来。
