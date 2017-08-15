@@ -1,0 +1,35 @@
+spring:
+  aop:
+    proxyTargetClass: true
+  application:
+    name: common-service-apigateway
+  boot:
+    admin:
+      api-path: http://admin.orrin.com:7999
+
+# Define the port where the API gateway server would be running
+server:
+  port: 80
+
+# Define the Eureka server that handles service registration
+eureka:
+  instance:
+      hostname: api.orrin.com
+      port: 8761
+  client:
+    serviceUrl:
+      defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
+
+zuul:
+  routes:
+    business-service-product:
+      path: /business/product/**
+      serviceId: business-service-product
+    common-service-uaa:
+      #sensitiveHeaders:
+      path: /common/uaa/**
+      #stripPrefix: false
+      serviceId: common-service-uaa
+  add-proxy-headers: true
+info:
+  version: @project.version@

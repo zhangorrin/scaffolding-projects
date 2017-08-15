@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: common-service-turbine
+
+# Define the port where the Service Registry server would be running
+server:
+  port: 8762
+
+# Defines the Eureka server that is used by the Netflix OSS components to use as the registry
+# for server discovery
+eureka:
+  instance:
+    port: ${server.port}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.orrin.com}:${server.port}/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+security:
+  basic:
+    enabled: false
+turbine:
+
+  ### 配置Eureka中的serviceId列表，表明监控哪些服务,逗号间隔
+  app-config: business-service-product
+  cluster-name-expression: new String("default")
