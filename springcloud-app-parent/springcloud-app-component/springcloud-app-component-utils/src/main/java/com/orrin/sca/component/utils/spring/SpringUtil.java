@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author orrin.zhang on 2017/8/11.
- * 注意：改类需要在Spring Boot可以扫描的包下
+ * 注意：该类需要在Spring Boot可以扫描的包下
  */
 @Component
 public class SpringUtil implements ApplicationContextAware {
