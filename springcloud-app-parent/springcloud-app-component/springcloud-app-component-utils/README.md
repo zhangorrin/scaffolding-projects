@@ -12,3 +12,10 @@
 
 > 日期处理
 * InstantFormat
+
+> 线程池跟踪封装
+```java
+ExecutorService executor = new TraceThreadPoolExecutor(corePoolSize, maximumPoolSize,
+                                                        keepAliveTime, TimeUnit.SECONDS,
+                                                        new LinkedBlockingQueue<Runnable>());
+```
