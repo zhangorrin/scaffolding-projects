@@ -37,6 +37,7 @@
         <fastdfs.version>1.25.4-RELEASE</fastdfs.version>
         <commons-pool2.version>2.4.2</commons-pool2.version>
         <fastdfs-client-java.version>1.25</fastdfs-client-java.version>
+        <disruptor.version>3.3.6</disruptor.version>
     </properties>
 
     <modules>
@@ -210,6 +211,14 @@
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons-pool2.version}</version>
             </dependency>
+
+            <!-- disruptor并发编程依赖 -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

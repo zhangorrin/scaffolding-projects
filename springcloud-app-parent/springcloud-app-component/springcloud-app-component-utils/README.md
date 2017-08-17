@@ -19,3 +19,6 @@ ExecutorService executor = new TraceThreadPoolExecutor(corePoolSize, maximumPool
                                                         keepAliveTime, TimeUnit.SECONDS,
                                                         new LinkedBlockingQueue<Runnable>());
 ```
+
+> 参数校验
+* ParameterValidatorUtils：使用hibernate validator校验java bean
