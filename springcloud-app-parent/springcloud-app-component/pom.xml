@@ -21,6 +21,7 @@
         <module>springcloud-app-component-swagger</module>
         <module>springcloud-app-component-rocketmq</module>
         <module>springcloud-app-component-activiti</module>
+        <module>springcloud-app-component-elasticsearch</module>
     </modules>
 
 
