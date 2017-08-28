@@ -24,6 +24,7 @@ eureka:
 security:
   basic:
     enabled: false
+  sessions: stateless
   oauth2:
     sso:
       login-path: /login
@@ -33,6 +34,7 @@ security:
       access-token-uri: http://uaa.orrin.com:8769/oauth/token
       user-authorization-uri: http://uaa.orrin.com:8769/oauth/authorize
     resource:
+      #loadBalanced: true  #设置这个才可以使用eureka的服务名，配合loadBalancerInterceptor bean。
       jwt:
         keyValue: |
           -----BEGIN PUBLIC KEY-----
@@ -40,6 +42,7 @@ security:
           -----END PUBLIC KEY-----
       id: openid
       serviceId: ${PREFIX:}resource
+
 
 logging:
   level:

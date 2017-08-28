@@ -45,6 +45,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 		return converter;
 	}
 
+	//可以改成JDBC从库里读或者其他方式。
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
@@ -59,7 +60,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.authenticationManager(authenticationManager)
 				.accessTokenConverter(jwtAccessTokenConverter())
-				.tokenStore(redisTokenStore());
+				.tokenStore(redisTokenStore())
+				//.userDetailsService()
+		;
 	}
 
 	@Override
