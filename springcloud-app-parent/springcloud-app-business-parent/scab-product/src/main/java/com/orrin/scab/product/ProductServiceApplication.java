@@ -1,5 +1,6 @@
 package com.orrin.scab.product;
 
+import com.orrin.sca.component.jpa.dao.BaseJPARepositoryImpl;
 import com.orrin.sca.component.jpa.parent.ParentApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,6 +13,7 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ import java.security.Principal;
 @EnableHystrix
 @EnableFeignClients
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableJpaRepositories(repositoryBaseClass = BaseJPARepositoryImpl.class)
 public class ProductServiceApplication extends ParentApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProductServiceApplication.class, args);

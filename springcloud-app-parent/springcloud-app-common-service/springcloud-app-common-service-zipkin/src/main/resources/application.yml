@@ -10,11 +10,11 @@ server:
 # for server discovery
 eureka:
   instance:
-    port: ${server.port}
+    port: 8761
   client:
-    registerWithEureka: false
+    registerWithEureka: true
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.orrin.com}:${server.port}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 0

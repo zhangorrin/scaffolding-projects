@@ -7,6 +7,18 @@ spring:
   zipkin:
     base-url: http://zipkin.orrin.com:8763
 
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      filter:
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+
 # Define the port where the Widget Foundry server would be running
 server:
   port: 9001
@@ -45,5 +57,5 @@ logging:
   level:
     org.springframework.security: DEBUG
 
-info:
-  version: @project.version@
+#info:
+#  version: @project.version@

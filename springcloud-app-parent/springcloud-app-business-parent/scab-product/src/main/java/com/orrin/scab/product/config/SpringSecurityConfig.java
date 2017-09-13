@@ -1,4 +1,4 @@
-package com.orrin.sca.common.service.uaa.config;
+package com.orrin.scab.product.config;
 
 import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -17,28 +18,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
 	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	public void configure(WebSecurity webSecurity) throws Exception {
+		webSecurity.ignoring().antMatchers("/health");
 	}
 
-	@Override
+	/*@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/index","/", "/health").permitAll();
+		http.authorizeRequests().antMatchers("/health").permitAll();
 
-		http.formLogin().loginPage("/login").permitAll().and().authorizeRequests()
-				.anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().authenticated();
 
 		//http.csrf().disable();
-	}
+	}*/
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
-				.withUser("user").password("password").roles("USER")
-				.and()
-				.withUser("admin").password("admin").roles("ADMIN");
-		//auth.parentAuthenticationManager(authenticationManager);
-	}
 }
