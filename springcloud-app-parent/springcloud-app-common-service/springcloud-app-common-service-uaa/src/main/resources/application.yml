@@ -9,6 +9,18 @@ spring:
     port: 6379
     database: 5
 
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/spring-cloud-uaa?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      filter:
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+
 # Define the port where the UAA server would be running
 server:
   port: 8769

@@ -12,8 +12,6 @@
     <artifactId>springcloud-app-common-framework</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>springcloud-app-common-framework-dao</module>
-        <module>springcloud-app-common-framework-model</module>
         <module>springcloud-app-common-framework-core</module>
     </modules>
 
