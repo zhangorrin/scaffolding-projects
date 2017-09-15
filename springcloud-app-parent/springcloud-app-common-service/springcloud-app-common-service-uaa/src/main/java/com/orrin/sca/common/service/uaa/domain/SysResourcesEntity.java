@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "SYS_RESOURCES")
-public class SysResources extends AbstractAuditingEntity {
+public class SysResourcesEntity extends AbstractAuditingEntity implements SysResources {
 
   private static final long serialVersionUID = 1L;
 

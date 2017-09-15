@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "SYS_USERS")
-public class SysUsers extends AbstractAuditingEntity {
+public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers{
 
   private static final long serialVersionUID = 1L;
 

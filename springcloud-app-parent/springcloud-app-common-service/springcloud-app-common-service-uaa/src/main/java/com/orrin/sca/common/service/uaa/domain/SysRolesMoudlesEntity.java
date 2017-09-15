@@ -5,8 +5,8 @@ import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "SYS_USERS_ROLES")
-public class SysUsersRoles extends AbstractAuditingEntity {
+@Table(name = "SYS_ROLES_MOUDLES")
+public class SysRolesMoudlesEntity extends AbstractAuditingEntity implements SysRolesMoudles{
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -14,11 +14,11 @@ public class SysUsersRoles extends AbstractAuditingEntity {
   @Column(name = "ID")
   private String id;
 
+  @Column(name = "MODULE_ID")
+  private String moduleId;
+
   @Column(name = "ROLE_ID")
   private String roleId;
-
-  @Column(name = "USER_ID")
-  private String userId;
 
   public String getId() {
     return id;
@@ -28,19 +28,19 @@ public class SysUsersRoles extends AbstractAuditingEntity {
     this.id = id;
   }
 
+  public String getModuleId() {
+    return moduleId;
+  }
+
+  public void setModuleId(String moduleId) {
+    this.moduleId = moduleId;
+  }
+
   public String getRoleId() {
     return roleId;
   }
 
   public void setRoleId(String roleId) {
     this.roleId = roleId;
-  }
-
-  public String getUserId() {
-    return userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
   }
 }

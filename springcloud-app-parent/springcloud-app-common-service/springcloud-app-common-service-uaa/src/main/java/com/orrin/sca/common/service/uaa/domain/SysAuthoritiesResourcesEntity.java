@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-public class SysAuthoritiesResources extends AbstractAuditingEntity {
+public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implements SysAuthoritiesResources {
 
   private static final long serialVersionUID = 1L;
 

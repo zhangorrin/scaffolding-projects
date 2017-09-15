@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "SYS_MODULES")
-public class SysModules extends AbstractAuditingEntity {
+public class SysModulesEntity extends AbstractAuditingEntity implements SysModules {
 
   private static final long serialVersionUID = 1L;
 

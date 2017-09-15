@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "oauth_client_details")
-public class OauthClientDetails extends AbstractAuditingEntity {
+public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements OauthClientDetails{
 
   private static final long serialVersionUID = 1L;
   @Id

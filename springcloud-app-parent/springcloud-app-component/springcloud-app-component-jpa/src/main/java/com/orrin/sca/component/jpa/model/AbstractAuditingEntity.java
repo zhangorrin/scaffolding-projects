@@ -19,7 +19,7 @@ import java.io.Serializable;
 @MappedSuperclass
 @Audited
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AbstractAuditingEntity implements Serializable {
+public abstract class AbstractAuditingEntity implements AbstractAuditingInterface, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
