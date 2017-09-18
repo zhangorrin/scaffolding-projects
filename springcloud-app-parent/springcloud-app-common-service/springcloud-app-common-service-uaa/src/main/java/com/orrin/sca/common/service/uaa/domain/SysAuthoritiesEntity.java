@@ -2,24 +2,37 @@ package com.orrin.sca.common.service.uaa.domain;
 
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "SYS_AUTHORITIES")
 public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysAuthorities {
 
   private static final long serialVersionUID = 1L;
-
+  @Id
+  @GeneratedValue
+  @Column(name = "authority_id")
   private String authorityId;
 
+  @Column(name = "authority_mark")
   private String authorityMark;
 
+  @Column(name = "authority_name")
   private String authority_name;
 
+  @Column(name = "authority_desc")
   private String authorityDesc;
 
+  @Column(name = "message")
   private String message;
 
+  @Column(name = "enable")
   private Long enable;
 
+  @Column(name = "issys")
   private Long issys;
 
+  @Column(name = "moduleId")
   private String moduleId;
 
   public String getAuthorityId() {

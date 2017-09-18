@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Orrin on 2017/7/8.
  */
@@ -22,6 +24,7 @@ public class SysUsersServiceImpl implements SysUsersService {
 	@Override
 	public Page<SysUsersEntity> findSysUsersNoCriteria(Integer page, Integer size) {
 		Pageable pageable = new PageRequest(page, size, Sort.Direction.ASC, "userId");
+		List<SysUsersEntity> listAll = sysUsersRepository.findAll();
 		Page<SysUsersEntity> sysUsersPage = sysUsersRepository.findAll(pageable);
 		return sysUsersPage;
 	}

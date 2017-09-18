@@ -39,7 +39,7 @@ public class CommonServiceUaaApplication extends ParentApplication {
 
 		@RequestMapping("index")
 		public Object index(){
-			return sysUsersService.findSysUsersNoCriteria(1,20);
+			return sysUsersService.findSysUsersNoCriteria(0,20);
 		}
 	}
 
