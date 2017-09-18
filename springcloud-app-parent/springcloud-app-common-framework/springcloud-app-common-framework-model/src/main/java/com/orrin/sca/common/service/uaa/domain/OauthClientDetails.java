@@ -4,7 +4,7 @@ import com.orrin.sca.component.jpa.model.AbstractAuditingInterface;
 
 public interface OauthClientDetails extends AbstractAuditingInterface {
 
-  public String getCliendId() ;
+  public String getClientId() ;
 
 
   public String getResourceIds() ;

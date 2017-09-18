@@ -41,9 +41,12 @@ eureka:
 security:
   basic:
     enabled: false
-  user:
-    password: password
+#  user:
+#    password: password
   ignored: /css/**,/js/**,/favicon.ico,/webjars/**
 
 logging:
-  level.org.springframework.security: DEBUG
+  level:
+    org.springframework.security: DEBUG
+    java.sql: DEBUG
+    com.orrin.: debug

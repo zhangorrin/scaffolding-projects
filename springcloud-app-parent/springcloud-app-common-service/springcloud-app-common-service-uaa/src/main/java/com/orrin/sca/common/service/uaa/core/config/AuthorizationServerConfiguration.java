@@ -1,5 +1,10 @@
-package com.orrin.sca.common.service.uaa.config;
+package com.orrin.sca.common.service.uaa.core.config;
 
+import com.orrin.sca.common.service.uaa.core.oauth.ClientDetailsServiceImpl;
+import com.orrin.sca.common.service.uaa.core.secure.CustomUserDetailsService;
+import com.orrin.sca.common.service.uaa.domain.OauthClientDetailsEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +21,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.security.KeyPair;
+import java.util.List;
 
 /**
  * @author orrin.zhang on 2017/7/28.
@@ -24,11 +30,19 @@ import java.security.KeyPair;
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+	private static final Logger logger = LoggerFactory.getLogger(AuthorizationServerConfiguration.class);
+
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private RedisConnectionFactory redisConnectionFactory;
+
+	@Autowired
+	private ClientDetailsServiceImpl clientDetailsService;
 
 	@Bean
 	public RedisTokenStore redisTokenStore(){
@@ -48,12 +62,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	//可以改成JDBC从库里读或者其他方式。
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		/*
 		clients.inMemory()
 				.withClient("acme")
 				.secret("acmesecret")
 				.authorizedGrantTypes("authorization_code", "refresh_token","password")
 				.autoApprove(true) //自动跳过确认授权
 				.scopes("openid");
+		*/
+		clients.withClientDetails(clientDetailsService);
 	}
 
 	@Override
@@ -61,7 +78,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 		endpoints.authenticationManager(authenticationManager)
 				.accessTokenConverter(jwtAccessTokenConverter())
 				.tokenStore(redisTokenStore())
-				//.userDetailsService()
+				.userDetailsService(customUserDetailsService)
 		;
 	}
 

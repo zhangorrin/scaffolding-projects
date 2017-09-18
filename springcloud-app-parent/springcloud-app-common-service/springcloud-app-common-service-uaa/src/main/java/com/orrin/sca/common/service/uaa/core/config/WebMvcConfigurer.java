@@ -1,4 +1,4 @@
-package com.orrin.sca.common.service.uaa.config;
+package com.orrin.sca.common.service.uaa.core.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

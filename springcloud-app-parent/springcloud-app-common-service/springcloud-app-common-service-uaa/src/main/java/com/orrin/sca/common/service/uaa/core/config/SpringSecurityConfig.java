@@ -1,0 +1,151 @@
+package com.orrin.sca.common.service.uaa.core.config;
+
+import com.orrin.sca.common.service.uaa.core.secure.CustomUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+/**
+ * @author orrin.zhang on 2017/7/28.
+ */
+@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
+@Configuration
+@EnableWebSecurity
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private static final Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
+
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+
+	/*@Bean
+	AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(customUserService());
+		daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+
+		return daoAuthenticationProvider;
+	}*/
+
+	/*@Bean
+	DefaultAccessDeniedHandler accessDeniedHandler() {
+		DefaultAccessDeniedHandler accessDeniedHandler = new DefaultAccessDeniedHandler();
+		accessDeniedHandler.setErrorPage("/securityException/accessDenied");
+		return accessDeniedHandler;
+	}
+
+	@Bean
+	AuthenticationSuccessHandler athenticationSuccessHandler() {
+		SimpleLoginSuccessHandler simpleLoginSuccessHandler = new SimpleLoginSuccessHandler();
+		return simpleLoginSuccessHandler;
+	}
+
+	@Bean
+	URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() {
+		URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource = new URLFilterInvocationSecurityMetadataSource();
+		return urlFilterInvocationSecurityMetadataSource;
+	}*/
+
+
+	@Bean(name = "authenticationManager")
+	@Override
+	public AuthenticationManager authenticationManagerBean() {
+		AuthenticationManager authenticationManager = null;
+		try {
+			authenticationManager = super.authenticationManagerBean();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return authenticationManager;
+	}
+
+	/*
+	 *
+	 * 这里可以增加自定义的投票器
+	 */
+	/*
+	@Bean(name = "accessDecisionManager")
+	public AccessDecisionManager accessDecisionManager() {
+		List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
+		decisionVoters.add(new RoleVoter());
+		decisionVoters.add(new AuthenticatedVoter());
+		decisionVoters.add(webExpressionVoter());// 启用表达式投票器
+		MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
+		return accessDecisionManager;
+	}
+
+	*//*
+	* 表达式控制器
+	*//*
+	@Bean(name = "expressionHandler")
+	public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+		DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+		return webSecurityExpressionHandler;
+	}
+
+	*//*
+	 * 表达式投票器
+	 *//*
+	@Bean(name = "expressionVoter")
+	public WebExpressionVoter webExpressionVoter() {
+		WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+		webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
+		return webExpressionVoter;
+	}*/
+
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/index","/", "/health", "/securityException/accessDenied").permitAll();
+
+		http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
+		/*
+		// 开启默认登录页面
+		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+			public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+				fsi.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+				fsi.setAccessDecisionManager(accessDecisionManager());
+				fsi.setAuthenticationManager(authenticationManagerBean());
+				return fsi;
+			}
+		}).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+
+				.and().formLogin().successHandler(athenticationSuccessHandler()).defaultSuccessUrl("/index").failureUrl("/login?error")
+
+				.and().logout().logoutSuccessUrl("/index").permitAll();
+
+		// 自定义accessDecisionManager访问控制器,并开启表达式语言
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+				.and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
+
+		// 自定义登录页面
+		http.csrf().disable();
+
+		// session管理
+		http.sessionManagement().maximumSessions(1);
+		*/
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService);
+		//auth.authenticationProvider(authenticationProvider());
+
+		/*auth.inMemoryAuthentication()
+				.withUser("user").password("password").roles("USER")
+				.and()
+				.withUser("admin").password("admin").roles("ADMIN");
+		*/
+		//auth.parentAuthenticationManager(authenticationManager);
+	}
+}
