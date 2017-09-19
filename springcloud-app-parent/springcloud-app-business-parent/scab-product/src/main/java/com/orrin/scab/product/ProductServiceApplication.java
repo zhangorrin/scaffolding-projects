@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
@@ -70,7 +71,7 @@ public class ProductServiceApplication extends ParentApplication {
 
 		@RequestMapping(method = RequestMethod.GET)
 		@ResponseBody
-		public String helloWorld(Principal principal) {
+		public String helloWorld(Principal principal, HttpServletRequest request) {
 			return principal == null ? "Hello anonymous" : "Hello " + principal.getName();
 		}
 

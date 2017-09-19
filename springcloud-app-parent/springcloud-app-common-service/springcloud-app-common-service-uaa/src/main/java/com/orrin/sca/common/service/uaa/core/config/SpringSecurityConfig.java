@@ -130,15 +130,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/index","/", "/health", "/securityException/accessDenied").permitAll();
+		http.authorizeRequests().antMatchers("/", "/health", "/securityException/accessDenied").permitAll();
 
-		http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
+		//http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
+
 		// 开启默认登录页面
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 			public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
 				fsi.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
-				fsi.setAccessDecisionManager(accessDecisionManager());
 				fsi.setAuthenticationManager(authenticationManagerBean());
+				fsi.setAccessDecisionManager(accessDecisionManager());
 				return fsi;
 			}
 		}).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
@@ -152,7 +153,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
 
 
-		//http.csrf().disable();
+		http.csrf().disable();
 
 		// session管理
 		//http.sessionManagement().maximumSessions(1);

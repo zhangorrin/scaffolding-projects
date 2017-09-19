@@ -25,6 +25,9 @@ zuul:
     business-service-product:
       path: /business/product/**
       serviceId: business-service-product
+    business-service-product-withoutsso:
+      path: /business/productwithoutsso/**
+      serviceId: business-service-product-withoutsso
     common-service-uaa:
       #sensitiveHeaders:
       path: /common/uaa/**
