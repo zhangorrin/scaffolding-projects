@@ -4,7 +4,7 @@ import com.orrin.sca.common.service.uaa.service.SysUsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,13 +19,11 @@ public class UaaController {
     @Autowired
     private SysUsersService sysUsersService;
 
+    @Autowired
+    private RedisTokenStore redisTokenStore;
+
     @RequestMapping(path = "index", method = RequestMethod.GET)
     public Object index(HttpServletRequest request){
-
-        String accessA = OAuth2AuthenticationDetails.ACCESS_TOKEN_VALUE;
-
-        Object accessTokenValue = request.getAttribute(accessA);
-
         return sysUsersService.findSysUsersNoCriteria(0,20);
     }
 
