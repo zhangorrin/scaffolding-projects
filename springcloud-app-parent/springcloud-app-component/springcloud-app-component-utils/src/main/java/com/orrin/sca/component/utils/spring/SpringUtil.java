@@ -5,13 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * @author orrin.zhang on 2017/8/11.
  * 注意：该类需要在Spring Boot可以扫描的包下
  */
 @Component
+@Order(Integer.MAX_VALUE)
 public class SpringUtil implements ApplicationContextAware {
 
 	private final static Logger logger = LoggerFactory.getLogger(SpringUtil.class);
@@ -47,4 +52,7 @@ public class SpringUtil implements ApplicationContextAware {
 		return getApplicationContext().getBean(name, clazz);
 	}
 
+	public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> clazz){
+		return getApplicationContext().getBeansWithAnnotation(clazz);
+	}
 }

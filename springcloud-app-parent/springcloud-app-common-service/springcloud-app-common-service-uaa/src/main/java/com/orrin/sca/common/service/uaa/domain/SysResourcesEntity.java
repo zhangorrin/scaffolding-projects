@@ -40,6 +40,9 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
   @Column(name = "MODULE_ID")
   private String moduleId;
 
+  @Column(name = "GLOBAL_UNIQUE_ID")
+  private String globalUniqueId;
+
   public String getResourceId() {
     return resourceId;
   }
@@ -110,5 +113,13 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
 
   public void setModuleId(String moduleId) {
     this.moduleId = moduleId;
+  }
+
+  public String getGlobalUniqueId() {
+    return globalUniqueId;
+  }
+
+  public void setGlobalUniqueId(String globalUniqueId) {
+    this.globalUniqueId = globalUniqueId;
   }
 }

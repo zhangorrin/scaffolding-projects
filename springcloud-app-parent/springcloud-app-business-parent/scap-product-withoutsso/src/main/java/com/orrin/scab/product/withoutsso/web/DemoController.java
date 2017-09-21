@@ -1,19 +1,25 @@
 package com.orrin.scab.product.withoutsso.web;
 
+import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
+import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
+import com.orrin.sca.component.privilege.processor.ResourcePrivilegeListenerProcessor;
 import com.orrin.scab.product.withoutsso.model.ProductDetail;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 public class DemoController {
 
+    @ResourcePrivilege(resourceGlobalUniqueId = "abc", resourceName = "root path")
     @RequestMapping(method = RequestMethod.GET)
-    public ProductDetail getProductDetail(HttpServletRequest request){
+    public Object getProductDetail(HttpServletRequest request){
         Enumeration<String> headerNames = request.getHeaderNames();
         while(headerNames.hasMoreElements()){
             String thisname = headerNames.nextElement();
@@ -40,6 +46,15 @@ public class DemoController {
         productDetail.setProductName("one");
         productDetail.setProductDescId("desc1");
 
+        ResourcePrivilegeListenerProcessor resourcePrivilegeListenerProcessor = new ResourcePrivilegeListenerProcessor();
+
+        List<ResourcePrivilegeEntity> resourcePrivilegeEntities = resourcePrivilegeListenerProcessor.getResourcePrivilegeByannotation();
+
+        return resourcePrivilegeEntities;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    public ProductDetail addProductDetail(@RequestBody ProductDetail productDetail, HttpServletRequest request){
         return productDetail;
     }
 }

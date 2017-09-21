@@ -23,4 +23,5 @@ public interface SysResources extends AbstractAuditingInterface {
 
   public String getModuleId();
 
+  public String getGlobalUniqueId();
 }

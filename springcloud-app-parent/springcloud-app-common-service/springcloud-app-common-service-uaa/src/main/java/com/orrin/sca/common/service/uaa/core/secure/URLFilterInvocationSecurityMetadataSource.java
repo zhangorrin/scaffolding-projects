@@ -86,9 +86,20 @@ public class URLFilterInvocationSecurityMetadataSource  implements FilterInvocat
 		while(it.hasNext()){
 			Object[] o = it.next();
 			Map<String,String> map = new HashMap<String,String>();
-			map.put("resourcePath", (String)o[0]);
-			map.put("authorityMark", (String)o[1]);
-			list.add(map);
+			String resourcePaths = (String)o[0];
+			if(resourcePaths.contains(",")){
+				String resourcePath[] = resourcePaths.split(",");
+				for(String rp : resourcePath) {
+					map.put("resourcePath", rp);
+					map.put("authorityMark", (String)o[1]);
+					list.add(map);
+				}
+			}else {
+				map.put("resourcePath", resourcePaths);
+				map.put("authorityMark", (String)o[1]);
+				list.add(map);
+			}
+
 		}
 
 		return list;

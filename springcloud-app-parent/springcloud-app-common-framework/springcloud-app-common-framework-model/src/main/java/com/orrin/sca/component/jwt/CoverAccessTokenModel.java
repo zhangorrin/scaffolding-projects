@@ -1,6 +1,7 @@
-package com.orrin.sca.common.service.apigateway.jwt;
+package com.orrin.sca.component.jwt;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.List;

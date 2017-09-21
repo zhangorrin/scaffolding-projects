@@ -22,6 +22,7 @@
         <module>springcloud-app-component-rocketmq</module>
         <module>springcloud-app-component-activiti</module>
         <module>springcloud-app-component-elasticsearch</module>
+        <module>springcloud-app-component-privilege</module>
     </modules>
 
 

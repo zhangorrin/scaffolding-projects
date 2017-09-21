@@ -2,20 +2,18 @@ package com.orrin.sca.common.service.apigateway.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.orrin.sca.common.service.apigateway.config.ApigatewayJWTUtils;
-import com.orrin.sca.common.service.apigateway.jwt.CoverAccessTokenModel;
+import com.orrin.sca.component.jwt.CoverAccessTokenModel;
 import com.orrin.sca.component.utils.json.JacksonUtils;
 import com.orrin.sca.framework.core.model.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.jwt.Jwt;
+import org.springframework.security.jwt.JwtHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @author orrin.zhang on 2017/7/28.
@@ -23,9 +21,6 @@ import java.util.Map;
 public class PreFilter extends ZuulFilter {
 
 	private static Logger log = LoggerFactory.getLogger(PreFilter.class);
-
-	@Autowired
-	private ApigatewayJWTUtils apigatewayJWTUtils;
 
 	/**
 	 * pre：可以在请求被路由之前调用
@@ -78,16 +73,16 @@ public class PreFilter extends ZuulFilter {
 			*/
 			return null;
 		}else {
-			try {
-				Map<String, ?> jwtcontent = apigatewayJWTUtils.convertAccessToken(accessToken);
-				CoverAccessTokenModel coverAccessTokenModel = new CoverAccessTokenModel();
-				BeanUtils.copyProperties(jwtcontent, coverAccessTokenModel);
-			} catch (InvalidTokenException e) {
-				responseResult = new ResponseResult();
-				responseResult.setResponseCode("10001");
-				responseResult.setResponseMsg(e.getMessage());
-			}
+			Jwt jwt = JwtHelper.decode(accessToken);
+			CoverAccessTokenModel coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
 
+			Date expDate = new Date(coverAccessTokenModel.getExp());
+
+			if(new Date().after(expDate)){
+				responseResult = new ResponseResult<>();
+				responseResult.setResponseCode("10001");
+				responseResult.setResponseMsg("token is expired !");
+			}
 
 			if(responseResult != null) {
 				ctx.setSendZuulResponse(false);
