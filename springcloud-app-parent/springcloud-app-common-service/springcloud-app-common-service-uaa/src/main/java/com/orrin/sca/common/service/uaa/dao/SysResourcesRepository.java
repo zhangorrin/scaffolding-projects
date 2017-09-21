@@ -14,6 +14,8 @@ import java.util.List;
 @Repository("sysResourcesRepository")
 public interface SysResourcesRepository extends BaseJPARepository<SysResourcesEntity, String>{
 
+	public int countByGlobalUniqueId(String lobalUniqueId);
+
 	@Query(value = "SELECT DISTINCT r.* FROM sys_authorities_resources ar, sys_roles_authorities ra, sys_users_roles ur, sys_resources r " +
 			"WHERE ur.role_id = ra.role_id AND ra.authority_id = ar.authority_id AND ar.resource_id = r.resource_id AND ur.user_id = :userId", nativeQuery = true)
 	List<SysResourcesEntity> findAuthResourcesByUserId(@Param("userId") String userId);

@@ -52,7 +52,7 @@
 
         <dependency>
             <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-common-framework-model</artifactId>
+            <artifactId>springcloud-app-common-framework-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

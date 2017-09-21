@@ -1,12 +1,14 @@
 package com.orrin.sca.component.privilege.processor;
 
+import com.orrin.sca.common.service.uaa.service.SysResourceServiceApi;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
 import com.orrin.sca.component.utils.spring.SpringUtil;
-import jodd.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +17,9 @@ import java.util.*;
 
 public class ResourcePrivilegeListenerProcessor {
     private Map<String, Object> beans;
+
+    @Autowired
+    private SysResourceServiceApi sysResourceServiceApi;
 
     public Map<String, Object> getBeans() {
         return beans;
@@ -47,7 +52,7 @@ public class ResourcePrivilegeListenerProcessor {
 
                 if(requestMapping != null) {
                     String paths[] = (requestMapping.path()!=null)?requestMapping.path():requestMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtil.join(paths,","));
+                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
                 }
 
                 list.add(resourcePrivilegeEntity);

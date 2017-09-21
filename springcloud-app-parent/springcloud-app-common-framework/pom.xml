@@ -14,6 +14,7 @@
     <modules>
         <module>springcloud-app-common-framework-core</module>
         <module>springcloud-app-common-framework-model</module>
+        <module>springcloud-app-common-framework-api</module>
     </modules>
 
 

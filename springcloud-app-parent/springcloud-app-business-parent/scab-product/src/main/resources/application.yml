@@ -19,6 +19,9 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
+  output:
+    ansi:
+      enabled: always
 # Define the port where the Widget Foundry server would be running
 server:
   port: 9001
