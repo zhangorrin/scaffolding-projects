@@ -1,6 +1,8 @@
 spring:
   application:
     name: business-service-product-withoutsso
+  jpa:
+    show-sql: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999

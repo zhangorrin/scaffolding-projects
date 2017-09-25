@@ -1,6 +1,8 @@
 spring:
   application:
     name: common-service-uaa
+  jpa:
+    show-sql: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -43,7 +45,7 @@ security:
     enabled: false
 #  user:
 #    password: password
-  ignored: /css/**,/js/**,/favicon.ico,/webjars/**
+  ignored: /css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**
 
 logging:
   level:

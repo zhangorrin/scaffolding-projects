@@ -1,6 +1,8 @@
 spring:
   application:
     name: business-service-product
+  jpa:
+    show-sql: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -55,6 +57,7 @@ security:
           -----END PUBLIC KEY-----
       id: openid
       serviceId: ${PREFIX:}resource
+  ignored: /css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**
 
 logging:
   level:
