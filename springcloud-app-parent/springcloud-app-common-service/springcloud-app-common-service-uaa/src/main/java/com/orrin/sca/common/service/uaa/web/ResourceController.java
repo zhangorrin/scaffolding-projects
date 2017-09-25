@@ -30,7 +30,7 @@ public class ResourceController implements SysResourceServiceApi {
 
         if(count > 0){
             responseResult.setResponseCode("10000");
-            responseResult.setResponseMsg("globalUniqueId repeate !");
+            responseResult.setResponseMsg("globalUniqueId repeate ! : " + "resourcePrivilege.resourceGlobalUniqueId()");
             return responseResult;
         }
 
@@ -46,4 +46,5 @@ public class ResourceController implements SysResourceServiceApi {
 
         return responseResult;
     }
+
 }
