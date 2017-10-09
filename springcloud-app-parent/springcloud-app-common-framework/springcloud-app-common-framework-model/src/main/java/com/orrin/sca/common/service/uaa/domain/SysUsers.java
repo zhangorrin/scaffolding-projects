@@ -8,6 +8,8 @@ public interface SysUsers extends AbstractAuditingInterface {
 
   public String getUserId();
 
+  public String getMobile();
+
   public String getUsername();
 
   public String getName();
@@ -28,12 +30,12 @@ public interface SysUsers extends AbstractAuditingInterface {
 
   public String getDepName();
 
-  public Long getEnabled();
+  public Boolean getEnabled();
 
-  public Long getAccountNonExpired();
+  public Boolean getAccountNonExpired();
 
-  public Long getAccountNonLocked();
+  public Boolean getAccountNonLocked();
 
-  public Long getCredentialsNonExpired();
+  public Boolean getCredentialsNonExpired();
 
 }

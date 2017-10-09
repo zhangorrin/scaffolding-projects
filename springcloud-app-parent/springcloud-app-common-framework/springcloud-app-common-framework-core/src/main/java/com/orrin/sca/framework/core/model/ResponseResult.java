@@ -1,11 +1,9 @@
 package com.orrin.sca.framework.core.model;
 
-import java.io.Serializable;
-
 /**
  * @author orrin.zhang on 2017/8/4.
  */
-public class ResponseResult<T extends Serializable> extends BaseResponseMsg{
+public class ResponseResult<T> extends BaseResponseMsg{
 	private static final long serialVersionUID = 1L;
 	private T data;
 

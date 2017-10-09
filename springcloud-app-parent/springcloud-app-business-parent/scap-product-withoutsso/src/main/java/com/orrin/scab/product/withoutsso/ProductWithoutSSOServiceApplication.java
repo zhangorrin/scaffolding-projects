@@ -2,9 +2,9 @@ package com.orrin.scab.product.withoutsso;
 
 import com.orrin.sca.component.jpa.dao.BaseJPARepositoryImpl;
 import com.orrin.sca.component.jpa.parent.ParentApplication;
-import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
 import com.orrin.sca.component.privilege.processor.ResourcePrivilegeListenerProcessor;
 import com.orrin.sca.component.utils.spring.SpringUtil;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,8 +19,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 /**
  * @author orrin.zhang on 2017/7/28.
  */
@@ -32,16 +30,10 @@ import java.util.List;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaRepositories(repositoryBaseClass = BaseJPARepositoryImpl.class)
 @Import(SpringUtil.class)
-public class ProductWithoutSSOServiceApplication extends ParentApplication {
+public class ProductWithoutSSOServiceApplication extends ParentApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProductWithoutSSOServiceApplication.class, args);
-
-		ResourcePrivilegeListenerProcessor resourcePrivilegeListenerProcessor = new ResourcePrivilegeListenerProcessor();
-
-		List<ResourcePrivilegeEntity> resourcePrivilegeEntities = resourcePrivilegeListenerProcessor.getResourcePrivilegeByannotation();
-
-		System.out.println(resourcePrivilegeEntities.toString());
 	}
 
 	@Bean
@@ -55,4 +47,8 @@ public class ProductWithoutSSOServiceApplication extends ParentApplication {
 		return new AlwaysSampler();
 	}
 
+	@Override
+	public void run(String... strings) throws Exception {
+		ResourcePrivilegeListenerProcessor resourcePrivilegeListenerProcessor = new ResourcePrivilegeListenerProcessor();
+	}
 }

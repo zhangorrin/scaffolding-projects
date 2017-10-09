@@ -28,13 +28,13 @@ public class CurrentSessionUser implements UserDetails {
 
 	private String depName;
 
-	private Long enabled;
+	private Boolean enabled;
 
-	private Long accountNonExpired;
+	private Boolean accountNonExpired;
 
-	private Long accountNonLocked;
+	private Boolean accountNonLocked;
 
-	private Long credentialsNonExpired;
+	private Boolean credentialsNonExpired;
 
 	private List<SysAuthoritiesEntity> sysAuthorities;
 
@@ -64,22 +64,22 @@ public class CurrentSessionUser implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.accountNonExpired.equals(Long.valueOf(0)) ? false : true;
+		return this.accountNonExpired;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return this.accountNonLocked.equals(Long.valueOf(0)) ? false : true;
+		return this.accountNonLocked;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return this.credentialsNonExpired.equals(Long.valueOf(0)) ? false : true;
+		return this.credentialsNonExpired;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return this.enabled.equals(Long.valueOf(0)) ? false : true;
+		return this.enabled;
 	}
 	public String getUserId() {
 		return userId;
@@ -121,31 +121,31 @@ public class CurrentSessionUser implements UserDetails {
 		this.depName = depName;
 	}
 
-	public Long getEnabled() {
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Long enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	public Long getAccountNonExpired() {
+	public Boolean getAccountNonExpired() {
 		return accountNonExpired;
 	}
 
-	public void setAccountNonExpired(Long accountNonExpired) {
+	public void setAccountNonExpired(Boolean accountNonExpired) {
 		this.accountNonExpired = accountNonExpired;
 	}
 
-	public Long getAccountNonLocked() {
+	public Boolean getAccountNonLocked() {
 		return accountNonLocked;
 	}
 
-	public void setAccountNonLocked(Long accountNonLocked) {
+	public void setAccountNonLocked(Boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
 	}
 
-	public Long getCredentialsNonExpired() {
+	public Boolean getCredentialsNonExpired() {
 		return credentialsNonExpired;
 	}
 
@@ -157,7 +157,7 @@ public class CurrentSessionUser implements UserDetails {
 		this.sysAuthorities = sysAuthorities;
 	}
 
-	public void setCredentialsNonExpired(Long credentialsNonExpired) {
+	public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 

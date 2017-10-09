@@ -3,11 +3,9 @@ package com.orrin.sca.common.service.uaa.service.impl;
 import com.orrin.sca.common.service.uaa.dao.SysUsersRepository;
 import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
 import com.orrin.sca.common.service.uaa.service.SysUsersService;
+import com.orrin.sca.component.jpa.dao.Range;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +25,11 @@ public class SysUsersServiceImpl implements SysUsersService {
 		List<SysUsersEntity> listAll = sysUsersRepository.findAll();
 		Page<SysUsersEntity> sysUsersPage = sysUsersRepository.findAll(pageable);
 		return sysUsersPage;
+	}
+
+	@Override
+	public Page<SysUsersEntity> queryByExampleWithRange(Example example, List<Range<SysUsersEntity>> ranges, Pageable pageable) {
+		return sysUsersRepository.queryByExampleWithRange(example, ranges, pageable);
 	}
 
 	/*@Override
@@ -71,5 +74,15 @@ public class SysUsersServiceImpl implements SysUsersService {
 	@Override
 	public SysUsersEntity findByUsername(String username) {
 		return sysUsersRepository.findByUsername(username);
+	}
+
+	@Override
+	public SysUsersEntity findByUserId(String userId) {
+		return sysUsersRepository.findOne(userId);
+	}
+
+	@Override
+	public SysUsersEntity saveAndFlush(SysUsersEntity sysUsersEntity) {
+		return sysUsersRepository.saveAndFlush(sysUsersEntity);
 	}
 }

@@ -16,6 +16,9 @@ public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers{
   @Column(name = "USER_ID")
   private String userId;
 
+  @Column(name = "mobile")
+  private String mobile;
+
   @Column(name = "USERNAME")
   private String username;
 
@@ -47,16 +50,26 @@ public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers{
   private String depName;
 
   @Column(name = "ENABLED")
-  private Long enabled;
+  private Boolean enabled;
 
   @Column(name = "ACCOUNT_NON_EXPIRED")
-  private Long accountNonExpired;
+  private Boolean accountNonExpired;
 
   @Column(name = "ACCOUNT_NON_LOCKED")
-  private Long accountNonLocked;
+  private Boolean accountNonLocked;
 
   @Column(name = "CREDENTIALS_NON_EXPIRED")
-  private Long credentialsNonExpired;
+  private Boolean credentialsNonExpired;
+
+  public SysUsersEntity() {
+  }
+
+  public SysUsersEntity( boolean initCreateAndUpdateTime) {
+    if(!initCreateAndUpdateTime){
+      super.setCreatedDate(null);
+      super.setLastModifiedDate(null);
+    }
+  }
 
   public String getUserId() {
     return userId;
@@ -146,35 +159,44 @@ public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers{
     this.depName = depName;
   }
 
-  public Long getEnabled() {
+  public Boolean getEnabled() {
     return enabled;
   }
 
-  public void setEnabled(Long enabled) {
+  public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
   }
 
-  public Long getAccountNonExpired() {
+  public Boolean getAccountNonExpired() {
     return accountNonExpired;
   }
 
-  public void setAccountNonExpired(Long accountNonExpired) {
+  public void setAccountNonExpired(Boolean accountNonExpired) {
     this.accountNonExpired = accountNonExpired;
   }
 
-  public Long getAccountNonLocked() {
+  public Boolean getAccountNonLocked() {
     return accountNonLocked;
   }
 
-  public void setAccountNonLocked(Long accountNonLocked) {
+  public void setAccountNonLocked(Boolean accountNonLocked) {
     this.accountNonLocked = accountNonLocked;
   }
 
-  public Long getCredentialsNonExpired() {
+  public Boolean getCredentialsNonExpired() {
     return credentialsNonExpired;
   }
 
-  public void setCredentialsNonExpired(Long credentialsNonExpired) {
+  public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
     this.credentialsNonExpired = credentialsNonExpired;
   }
+
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
 }
+
