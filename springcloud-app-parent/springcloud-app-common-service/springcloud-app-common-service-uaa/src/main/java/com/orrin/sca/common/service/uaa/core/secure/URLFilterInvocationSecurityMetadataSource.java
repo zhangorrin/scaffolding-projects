@@ -1,10 +1,12 @@
 package com.orrin.sca.common.service.uaa.core.secure;
 
 import com.orrin.sca.common.service.uaa.dao.SysResourcesRepository;
+import com.orrin.sca.component.redis.config.Prefixes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -12,6 +14,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -30,6 +33,9 @@ public class URLFilterInvocationSecurityMetadataSource  implements FilterInvocat
 	@Autowired
 	private SysResourcesRepository sysResourcesRepository;
 
+	@Resource(name= "redisTemplate")
+	private HashOperations<String, String, Collection<ConfigAttribute>> hashOperations;
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		this.requestMap = this.bindRequestMap();
@@ -42,8 +48,18 @@ public class URLFilterInvocationSecurityMetadataSource  implements FilterInvocat
 
 		Collection<ConfigAttribute> attrs = NULL_CONFIG_ATTRIBUTE;
 
-		for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
-			if (entry.getKey().matches(request)) {
+		Map<String, Collection<ConfigAttribute>> resourceAndAuth = hashOperations.entries(Prefixes.RESOURCE_AND_AUTHORITIES_SET.getValue());
+
+		if(resourceAndAuth == null){
+			logger.info("reflash 资源权限列表 ");
+			this.bindRequestMap();
+		}
+
+		for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceAndAuth.entrySet()) {
+
+			AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(entry.getKey());
+
+			if (antPathRequestMatcher.matches(request)) {
 				attrs =  entry.getValue();
 				break;
 			}
@@ -135,8 +151,10 @@ public class URLFilterInvocationSecurityMetadataSource  implements FilterInvocat
 			Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
 			atts = SecurityConfig.createListFromCommaDelimitedString(entry.getValue());
 			map.put(new AntPathRequestMatcher(key), atts);
+			hashOperations.putIfAbsent(Prefixes.RESOURCE_AND_AUTHORITIES_SET.getValue(),key,atts);
 		}
 
 		return map;
 	}
+
 }

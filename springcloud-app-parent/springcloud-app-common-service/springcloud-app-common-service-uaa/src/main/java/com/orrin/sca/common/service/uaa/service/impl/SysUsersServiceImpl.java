@@ -7,6 +7,7 @@ import com.orrin.sca.component.jpa.dao.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -83,6 +84,14 @@ public class SysUsersServiceImpl implements SysUsersService {
 
 	@Override
 	public SysUsersEntity saveAndFlush(SysUsersEntity sysUsersEntity) {
+		if(sysUsersEntity!=null && !StringUtils.hasText(sysUsersEntity.getPassword())){
+			sysUsersEntity.setPassword("123456");
+		}
 		return sysUsersRepository.saveAndFlush(sysUsersEntity);
+	}
+
+	@Override
+	public void deleteByUserId(String userId) {
+		sysUsersRepository.delete(userId);
 	}
 }

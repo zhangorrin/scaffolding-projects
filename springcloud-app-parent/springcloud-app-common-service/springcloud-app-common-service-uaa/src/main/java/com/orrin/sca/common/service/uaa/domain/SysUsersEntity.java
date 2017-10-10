@@ -12,7 +12,6 @@ public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers{
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
   @Column(name = "USER_ID")
   private String userId;
 

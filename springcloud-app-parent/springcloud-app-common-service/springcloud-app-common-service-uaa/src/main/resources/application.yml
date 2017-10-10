@@ -3,6 +3,8 @@ spring:
     name: common-service-uaa
   jpa:
     show-sql: true
+    properties:
+      jadira.usertype.autoRegisterUserTypes: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -22,6 +24,8 @@ spring:
           db-type: mysql
           log-slow-sql: true
           slow-sql-millis: 2000
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 # Define the port where the UAA server would be running
 server:
@@ -49,6 +53,6 @@ security:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    root: DEBUG
     java.sql: DEBUG
     com.orrin.: debug

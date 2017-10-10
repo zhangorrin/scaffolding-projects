@@ -8,6 +8,7 @@ import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AuthenticatedVoter;
@@ -131,7 +132,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/health", "/securityException/accessDenied").permitAll();
-
+		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/oauth/token", "/**");
 		//http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
 
 		// 开启默认登录页面

@@ -22,4 +22,6 @@ public interface SysUsersService {
 	SysUsersEntity findByUserId(String userId);
 
 	SysUsersEntity saveAndFlush(SysUsersEntity sysUsersEntity);
+
+	void deleteByUserId(String userId);
 }

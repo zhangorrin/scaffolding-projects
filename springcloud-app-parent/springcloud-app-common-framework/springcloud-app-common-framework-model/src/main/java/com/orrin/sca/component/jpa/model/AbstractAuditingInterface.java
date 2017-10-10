@@ -1,14 +1,16 @@
 package com.orrin.sca.component.jpa.model;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 
 public interface AbstractAuditingInterface extends Serializable {
     public String getCreatedBy();
 
-    public String getCreatedDate();
+    public DateTime getCreatedDate();
 
     public String getLastModifiedBy();
 
-    public String getLastModifiedDate();
+    public DateTime getLastModifiedDate();
 
 }

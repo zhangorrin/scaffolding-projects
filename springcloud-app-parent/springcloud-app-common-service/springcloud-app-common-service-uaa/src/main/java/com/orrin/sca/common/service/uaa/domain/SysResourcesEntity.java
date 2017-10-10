@@ -43,6 +43,9 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
   @Column(name = "GLOBAL_UNIQUE_ID")
   private String globalUniqueId;
 
+  @Column(name = "FATHER_RESOURCE_ID")
+  private String fatherResourceId;
+
   public String getResourceId() {
     return resourceId;
   }
@@ -121,5 +124,13 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
 
   public void setGlobalUniqueId(String globalUniqueId) {
     this.globalUniqueId = globalUniqueId;
+  }
+
+  public String getFatherResourceId() {
+    return fatherResourceId;
+  }
+
+  public void setFatherResourceId(String fatherResourceId) {
+    this.fatherResourceId = fatherResourceId;
   }
 }

@@ -3,10 +3,11 @@ package com.orrin.sca.common.service.uaa.web;
 import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
 import com.orrin.sca.common.service.uaa.service.SysUsersService;
 import com.orrin.sca.component.jpa.dao.Range;
-import com.orrin.sca.component.utils.date.DateFormat;
 import com.orrin.sca.component.utils.json.annotation.JSON;
+import com.orrin.sca.component.utils.security.SecurityUtils;
 import com.orrin.sca.component.utils.string.LocalStringUtils;
 import com.orrin.sca.framework.core.model.ResponseResult;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,12 +68,12 @@ public class UserController {
             Comparable<SysUsersEntity> ccreatedDateEnd = null;
 
             if(StringUtils.hasText(createdDateEnd)){
-                ccreatedDateEnd = ( s11)  -> s11.getCreatedDate().compareTo(createdDateEnd);
+                ccreatedDateEnd = ( s11)  -> s11.getCreatedDate().compareTo(DateTime.parse(createdDateEnd));
             }
 
             Comparable<SysUsersEntity> ccreatedDateStart = null;
             if(StringUtils.hasText(createdDateStart)){
-                ccreatedDateStart = ( s11)  -> s11.getCreatedDate().compareTo(createdDateStart);
+                ccreatedDateStart = ( s11)  -> s11.getCreatedDate().compareTo(DateTime.parse(createdDateStart));
             }
 
             Example<SysUsersEntity> entityExample = Example.of(sysUsersEntity, exampleMatcher);
@@ -96,18 +96,16 @@ public class UserController {
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     @JSON(type = SysUsersEntity.class, filter = "password")
-    public ResponseResult<SysUsersEntity> addOrEdit(@RequestBody SysUsersEntity sysUsersEntity, Principal principal, HttpServletRequest request){
+    public ResponseResult<SysUsersEntity> addOrEdit(@RequestBody SysUsersEntity sysUsersEntity, HttpServletRequest request){
         ResponseResult<SysUsersEntity> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
 
         if(!StringUtils.hasText(sysUsersEntity.getUserId())){
             sysUsersEntity.setUserId(LocalStringUtils.uuidLowerCase());
-            sysUsersEntity.setCreatedBy(principal.getName());
-            sysUsersEntity.setCreatedDate(DateFormat.defaultFormat());
+            sysUsersEntity.setCreatedBy(SecurityUtils.getCurrentUserUsername());
         }
 
-        sysUsersEntity.setLastModifiedBy(principal.getName());
-        sysUsersEntity.setLastModifiedDate(DateFormat.defaultFormat());
+        sysUsersEntity.setLastModifiedBy(SecurityUtils.getCurrentUserUsername());
 
 
         sysUsersEntity = sysUsersService.saveAndFlush(sysUsersEntity);
@@ -125,6 +123,17 @@ public class UserController {
 
         SysUsersEntity sysUsersEntitie = sysUsersService.findByUserId(userId);
         responseResult.setData(sysUsersEntitie);
+
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/{userId}", method = RequestMethod.DELETE)
+    @JSON(type = SysUsersEntity.class, filter = "password")
+    public ResponseResult deleteByUserId(@PathVariable("userId") String userId, HttpServletRequest request){
+        ResponseResult<SysUsersEntity> responseResult = new ResponseResult<>();
+        responseResult.setResponseCode("00000");
+
+        sysUsersService.deleteByUserId(userId);
 
         return responseResult;
     }

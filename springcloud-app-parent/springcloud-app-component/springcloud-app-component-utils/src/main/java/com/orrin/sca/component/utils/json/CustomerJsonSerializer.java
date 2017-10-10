@@ -3,7 +3,9 @@ package com.orrin.sca.component.utils.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.orrin.sca.component.utils.json.annotation.JSON;
+import com.orrin.sca.component.utils.json.datetime.DateTimeModule;
 import com.orrin.sca.component.utils.json.filter.JacksonJsonFilter;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +33,8 @@ public class CustomerJsonSerializer {
 	@SuppressWarnings("unchecked")
 	public String toJson(Object object) throws JsonProcessingException {
 		mapper.setFilters(jacksonFilter);
+		mapper.registerModule(new DateTimeModule());
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 		return mapper.writeValueAsString(object);
 	}
 	public void filter(JSON json) {

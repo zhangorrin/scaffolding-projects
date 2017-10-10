@@ -1,7 +1,12 @@
 package com.orrin.sca.component.jpa.model;
 
-import com.orrin.sca.component.utils.date.InstantFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.orrin.sca.component.utils.json.datetime.DateTimeDesrializer;
+import com.orrin.sca.component.utils.json.datetime.DateTimeSerializer;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -28,8 +33,11 @@ public abstract class AbstractAuditingEntity implements AbstractAuditingInterfac
 	private String createdBy;
 
 	@CreatedDate
-	@Column(name = "created_date", nullable = false)
-	private String createdDate = InstantFormat.defaultFormat();
+	@Column(name = "created_date", nullable = false, updatable = false)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@JsonDeserialize(using=DateTimeDesrializer.class)
+	@JsonSerialize(using = DateTimeSerializer.class)
+	private DateTime createdDate;
 
 	@LastModifiedBy
 	@Column(name = "last_modified_by", length = 50)
@@ -37,7 +45,10 @@ public abstract class AbstractAuditingEntity implements AbstractAuditingInterfac
 
 	@LastModifiedDate
 	@Column(name = "last_modified_date")
-	private String lastModifiedDate = InstantFormat.defaultFormat();
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@JsonDeserialize(using=DateTimeDesrializer.class)
+	@JsonSerialize(using = DateTimeSerializer.class)
+	private DateTime lastModifiedDate;
 
 	public String getCreatedBy() {
 		return createdBy;
@@ -47,11 +58,11 @@ public abstract class AbstractAuditingEntity implements AbstractAuditingInterfac
 		this.createdBy = createdBy;
 	}
 
-	public String getCreatedDate() {
+	public DateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(String createdDate) {
+	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -63,11 +74,11 @@ public abstract class AbstractAuditingEntity implements AbstractAuditingInterfac
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	public String getLastModifiedDate() {
+	public DateTime getLastModifiedDate() {
 		return lastModifiedDate;
 	}
 
-	public void setLastModifiedDate(String lastModifiedDate) {
+	public void setLastModifiedDate(DateTime lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 }
