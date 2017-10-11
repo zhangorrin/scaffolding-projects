@@ -24,8 +24,6 @@ spring:
           db-type: mysql
           log-slow-sql: true
           slow-sql-millis: 2000
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
 
 # Define the port where the UAA server would be running
 server:

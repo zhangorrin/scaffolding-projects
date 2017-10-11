@@ -1,5 +1,6 @@
 package com.orrin.sca.component.utils.date;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -29,6 +30,20 @@ public class DateFormat {
 		return threadLocal.get().get(datePattern.getValue());
 	}
 
+	private static SimpleDateFormat getSimpleDateFormat(String datePattern){
+		if(threadLocal.get() == null){
+			Map<String, SimpleDateFormat> map = new HashMap<>();
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+			map.put(datePattern,simpleDateFormat);
+			threadLocal.set(map);
+		}else if(threadLocal.get()!= null && threadLocal.get().get(datePattern) == null) {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+			threadLocal.get().put(datePattern,simpleDateFormat);
+		}
+
+		return threadLocal.get().get(datePattern);
+	}
+
 	public static String defaultFormat(Instant instant){
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 		String format = localDateTime.format(DateTimeFormatter.ofPattern(DatePattern.YYYY_MM_DD_HH_MM_SS.getValue()));
@@ -50,5 +65,35 @@ public class DateFormat {
 	public static String patternFormat(Date date, DatePattern datePattern){
 		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(datePattern);
 		return simpleDateFormat.format(date);
+	}
+
+	public static Date defaultPatternFormat(String dataStr){
+		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(DatePattern.YYYY_MM_DD_HH_MM_SS);
+		try {
+			return simpleDateFormat.parse(dataStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Date patternFormat(String dataStr, DatePattern datePattern){
+		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(datePattern);
+		try {
+			return simpleDateFormat.parse(dataStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Date patternFormat(String dataStr, String datePattern){
+		SimpleDateFormat simpleDateFormat = getSimpleDateFormat(datePattern);
+		try {
+			return simpleDateFormat.parse(dataStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
