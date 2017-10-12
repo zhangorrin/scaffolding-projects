@@ -15,15 +15,19 @@ public interface SysResources extends AbstractAuditingInterface {
 
   public String getResourcePath();
 
-  public String getPriority();
+  public Integer getPriority();
 
-  public Long getEnable();
+  public Boolean getEnable();
 
-  public Long getIssys();
+  public Boolean getIssys();
 
   public String getModuleId();
 
   public String getGlobalUniqueId();
 
   public String getFatherResourceId();
+
+  public String getIcon();
+
+  public String getRequestMethod();
 }

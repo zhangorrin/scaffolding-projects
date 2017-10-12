@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository("sysUsersRepository")
 public interface SysUsersRepository extends BaseJPARepository<SysUsersEntity, String> {
 	SysUsersEntity findByUsername(String username);
+
+	SysUsersEntity findByMobile(String mobile);
 }

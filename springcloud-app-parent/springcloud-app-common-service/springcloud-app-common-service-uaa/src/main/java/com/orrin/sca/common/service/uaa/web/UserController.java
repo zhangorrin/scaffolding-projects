@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -62,10 +62,10 @@ public class UserController {
             List<Range<SysUsersEntity>> rangeList = new ArrayList<>();
             rangeList.add(rangeCreatedDate);
 
-            Pageable pageable = new PageRequest(userRequestParams.getPage(), userRequestParams.getSize(), Sort.Direction.ASC, "userId");
+            Pageable pageable = new PageRequest(userRequestParams.getQueryPage(), userRequestParams.getSize(), Sort.Direction.ASC, "userId");
             sysUsersEntities = sysUsersService.queryByExampleWithRange(entityExample, rangeList, pageable);
         }else {
-            sysUsersEntities = sysUsersService.findSysUsersNoCriteria(userRequestParams.getPage(), userRequestParams.getSize());
+            sysUsersEntities = sysUsersService.findSysUsersNoCriteria(userRequestParams.getQueryPage(), userRequestParams.getSize());
         }
 
         responseResult.setData(sysUsersEntities);
@@ -90,6 +90,13 @@ public class UserController {
         if(checkUsername!=null && !checkUsername.getUserId().equals(sysUsersEntity.getUserId())){
             responseResult.setResponseCode("10000");
             responseResult.setResponseMsg("username repeat! ");
+            return responseResult;
+        }
+
+        checkUsername = sysUsersService.findByMobile(sysUsersEntity.getMobile());
+        if(checkUsername!=null && !checkUsername.getUserId().equals(sysUsersEntity.getUserId())){
+            responseResult.setResponseCode("10000");
+            responseResult.setResponseMsg("mobile repeat! ");
             return responseResult;
         }
 

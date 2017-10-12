@@ -78,6 +78,11 @@ public class SysUsersServiceImpl implements SysUsersService {
 	}
 
 	@Override
+	public SysUsersEntity findByMobile(String mobile) {
+		return sysUsersRepository.findByMobile(mobile);
+	}
+
+	@Override
 	public SysUsersEntity findByUserId(String userId) {
 		return sysUsersRepository.findOne(userId);
 	}

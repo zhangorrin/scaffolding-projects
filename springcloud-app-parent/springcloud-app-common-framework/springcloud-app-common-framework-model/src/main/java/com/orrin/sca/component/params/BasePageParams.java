@@ -23,4 +23,8 @@ public class BasePageParams implements Serializable {
     public void setSize(Integer size) {
         this.size = size;
     }
+
+    public Integer getQueryPage() {
+        return page > 0 ? (page - 1) : page;
+    }
 }

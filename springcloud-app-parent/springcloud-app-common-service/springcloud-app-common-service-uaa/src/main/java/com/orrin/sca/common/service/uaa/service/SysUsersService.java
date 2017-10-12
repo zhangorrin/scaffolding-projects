@@ -19,6 +19,8 @@ public interface SysUsersService {
 
 	SysUsersEntity findByUsername(String username);
 
+	SysUsersEntity findByMobile(String mobile);
+
 	SysUsersEntity findByUserId(String userId);
 
 	SysUsersEntity saveAndFlush(SysUsersEntity sysUsersEntity);

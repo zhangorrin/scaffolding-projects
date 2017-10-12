@@ -31,4 +31,6 @@ public interface SysResourcesRepository extends BaseJPARepository<SysResourcesEn
 			" ORDER BY" +
 			" s3.priority DESC", nativeQuery = true)
 	List<Object[]> findAuthResources();
+
+	List<SysResourcesEntity> findByResourceTypeAndEnableOrderByPriorityAsc(String resourceType, boolean enable);
 }

@@ -5,5 +5,5 @@ import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
 import com.orrin.sca.framework.core.model.ResponseResult;
 
 public interface SysResourceServiceApi {
-    ResponseResult<SysResources> insert(ResourcePrivilegeEntity resourcePrivilegeEntity);
+    ResponseResult<SysResources> insertPrivilege(ResourcePrivilegeEntity resourcePrivilegeEntity);
 }
