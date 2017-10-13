@@ -10,4 +10,6 @@ public interface SysAuthoritiesService {
 
 	Page<SysAuthoritiesEntity> findNoCriteria(Integer page, Integer size);
 	//Page<SysAuthoritiesEntity> findCriteria(Integer page, Integer size, SysAuthoritiesEntity sysAuthorities);
+
+	void deleteAuthority(String authorityId);
 }

@@ -8,15 +8,15 @@ public interface SysAuthorities extends AbstractAuditingInterface {
 
   public String getAuthorityMark();
 
-  public String getAuthority_name();
+  public String getAuthorityName();
 
   public String getAuthorityDesc();
 
   public String getMessage() ;
 
-  public Long getEnable() ;
+  public Boolean getEnable() ;
 
-  public Long getIssys();
+  public Boolean getIssys();
 
   public String getModuleId();
 }

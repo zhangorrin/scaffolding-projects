@@ -19,4 +19,7 @@ public interface SysAuthoritiesRepository extends BaseJPARepository<SysAuthoriti
 			" AND ur.role_id = ra.role_id" +
 			" AND ur.user_id = :userId", nativeQuery = true)
 	List<SysAuthoritiesEntity> findAuthorityByUserId(@Param("userId") String userId);
+
+	SysAuthoritiesEntity findByAuthorityMark(String authorityMark);
+
 }

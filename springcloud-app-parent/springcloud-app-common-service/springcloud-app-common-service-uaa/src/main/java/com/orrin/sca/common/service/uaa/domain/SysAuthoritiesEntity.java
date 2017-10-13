@@ -10,7 +10,6 @@ public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysA
 
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue
   @Column(name = "authority_id")
   private String authorityId;
 
@@ -18,7 +17,7 @@ public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysA
   private String authorityMark;
 
   @Column(name = "authority_name")
-  private String authority_name;
+  private String authorityName;
 
   @Column(name = "authority_desc")
   private String authorityDesc;
@@ -27,10 +26,10 @@ public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysA
   private String message;
 
   @Column(name = "enable")
-  private Long enable;
+  private Boolean enable;
 
   @Column(name = "issys")
-  private Long issys;
+  private Boolean issys;
 
   @Column(name = "moduleId")
   private String moduleId;
@@ -51,12 +50,12 @@ public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysA
     this.authorityMark = authorityMark;
   }
 
-  public String getAuthority_name() {
-    return authority_name;
+  public String getAuthorityName() {
+    return authorityName;
   }
 
-  public void setAuthority_name(String authority_name) {
-    this.authority_name = authority_name;
+  public void setAuthorityName(String authorityName) {
+    this.authorityName = authorityName;
   }
 
   public String getAuthorityDesc() {
@@ -75,19 +74,19 @@ public class SysAuthoritiesEntity extends AbstractAuditingEntity implements SysA
     this.message = message;
   }
 
-  public Long getEnable() {
+  public Boolean getEnable() {
     return enable;
   }
 
-  public void setEnable(Long enable) {
+  public void setEnable(Boolean enable) {
     this.enable = enable;
   }
 
-  public Long getIssys() {
+  public Boolean getIssys() {
     return issys;
   }
 
-  public void setIssys(Long issys) {
+  public void setIssys(Boolean issys) {
     this.issys = issys;
   }
 

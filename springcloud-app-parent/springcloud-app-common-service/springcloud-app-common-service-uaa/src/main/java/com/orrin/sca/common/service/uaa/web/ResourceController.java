@@ -99,8 +99,8 @@ public class ResourceController implements SysResourceServiceApi {
     }
 
     @RequestMapping(path = "/{resourceId}", method = RequestMethod.DELETE)
-    public ResponseResult<Page<SysResourcesEntity>> delete(@PathVariable("resourceId") String resourceId) {
-        ResponseResult<Page<SysResourcesEntity>> responseResult = new ResponseResult<>();
+    public ResponseResult<Void> delete(@PathVariable("resourceId") String resourceId) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
