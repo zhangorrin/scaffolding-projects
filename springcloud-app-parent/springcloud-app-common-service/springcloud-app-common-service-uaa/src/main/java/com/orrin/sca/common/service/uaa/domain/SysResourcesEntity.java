@@ -4,12 +4,37 @@ package com.orrin.sca.common.service.uaa.domain;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "SYS_RESOURCES")
 public class SysResourcesEntity extends AbstractAuditingEntity implements SysResources {
 
   private static final long serialVersionUID = 1L;
+
+  public SysResourcesEntity() {
+  }
+
+  public SysResourcesEntity(String resourceId, String resourceType, String resourceName,
+                            String resourceDesc, String resourcePath, Integer priority,
+                            Boolean enable, Boolean issys, String moduleId, String globalUniqueId,
+                            String fatherResourceId, String icon, String requestMethod,
+                            String createdBy, Date createdDate, String lastModifiedBy, Date lastModifiedDate) {
+    super(createdBy,createdDate,lastModifiedBy,lastModifiedDate);
+    this.resourceId = resourceId;
+    this.resourceType = resourceType;
+    this.resourceName = resourceName;
+    this.resourceDesc = resourceDesc;
+    this.resourcePath = resourcePath;
+    this.priority = priority;
+    this.enable = enable;
+    this.issys = issys;
+    this.moduleId = moduleId;
+    this.globalUniqueId = globalUniqueId;
+    this.fatherResourceId = fatherResourceId;
+    this.icon = icon;
+    this.requestMethod = requestMethod;
+  }
 
   @Id
   @Column(name = "RESOURCE_ID")

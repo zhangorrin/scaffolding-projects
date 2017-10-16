@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,8 +61,40 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 
 	@Override
 	public Page<SysResourcesEntity> findResourcesByAuthorities(String authorityId, String resourceName, Integer page, Integer size) {
-		List<SysResourcesEntity> sreList = sysAuthoritiesResourcesRepository.findResourcesByAuthorityId(authorityId,resourceName);
-		Page<SysResourcesEntity> srePage = new PageImpl<SysResourcesEntity>(sreList);
+		List<Object[]> sreList = sysAuthoritiesResourcesRepository.findResourcesByAuthorityId(authorityId,resourceName, page*size, size);
+
+		Pageable pageable = new PageRequest(page, size, Sort.Direction.ASC, "resourceId");
+
+		List<Object> countOjb = sysAuthoritiesResourcesRepository.countResourcesByAuthorityId(authorityId,resourceName);
+		BigInteger count = (countOjb.get(0) instanceof BigInteger) ? (BigInteger)countOjb.get(0) : BigInteger.valueOf(0);
+
+		List<SysResourcesEntity> allSreList = new ArrayList<>();
+		for(Object[] obj : sreList){
+			String resourceId = obj[0] == null?null:obj[0].toString();
+			String resourceType = obj[1] == null?null:obj[1].toString();
+			String resourceNameT = obj[2] == null?null:obj[2].toString();
+			String resourceDesc = obj[3] == null?null:obj[3].toString();
+			String resourcePath = obj[4] == null?null:obj[4].toString();
+			Integer priority = obj[5] == null ? null : (Integer) obj[5];
+			Boolean enable = obj[6] == null?null:(Boolean)obj[6];
+			Boolean issys = obj[7] == null?null:(Boolean)obj[7];
+			String moduleId = obj[8] == null?null:obj[8].toString();
+			String globalUniqueId = obj[9] == null?null:obj[9].toString();
+			String fatherResourceId = obj[10] == null?null:obj[10].toString();
+			String icon = obj[11] == null?null:obj[11].toString();
+			String requestMethod = obj[12] == null?null:obj[12].toString();
+			String createdBy = obj[13] == null?null:obj[13].toString();
+			Date createdDate = obj[14] == null?null:(Date)obj[14];
+			String lastModifiedBy = obj[15] == null?null:obj[15].toString();
+			Date lastModifiedDate = obj[16] == null?null:(Date)obj[16];
+			SysResourcesEntity sre = new SysResourcesEntity(resourceId, resourceType, resourceNameT,
+					resourceDesc, resourcePath, priority, enable, issys, moduleId, globalUniqueId,
+					fatherResourceId, icon, requestMethod, createdBy, createdDate, lastModifiedBy, lastModifiedDate);
+
+			allSreList.add(sre);
+		}
+
+		Page<SysResourcesEntity> srePage = new PageImpl<SysResourcesEntity>(allSreList,pageable,count.longValue());
 		return srePage;
 	}
 

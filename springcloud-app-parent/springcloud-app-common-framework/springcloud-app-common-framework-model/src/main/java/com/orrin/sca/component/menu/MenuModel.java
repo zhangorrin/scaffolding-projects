@@ -10,7 +10,7 @@ public class MenuModel implements Serializable {
 
     private String title;
 
-    private Boolean expend = true;
+    private Boolean expand = true;
 
     private Boolean disabled = false;
 
@@ -36,12 +36,12 @@ public class MenuModel implements Serializable {
         this.title = title;
     }
 
-    public Boolean getExpend() {
-        return expend;
+    public Boolean getExpand() {
+        return expand;
     }
 
-    public void setExpend(Boolean expend) {
-        this.expend = expend;
+    public void setExpand(Boolean expand) {
+        this.expand = expand;
     }
 
     public Boolean getDisabled() {

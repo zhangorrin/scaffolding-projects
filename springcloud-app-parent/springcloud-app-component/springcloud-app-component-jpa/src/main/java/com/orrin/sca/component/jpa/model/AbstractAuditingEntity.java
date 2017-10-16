@@ -25,6 +25,16 @@ public abstract class AbstractAuditingEntity implements AbstractAuditingInterfac
 
 	private static final long serialVersionUID = 1L;
 
+	public AbstractAuditingEntity() {
+	}
+
+	public AbstractAuditingEntity(String createdBy, Date createdDate, String lastModifiedBy, Date lastModifiedDate) {
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.lastModifiedBy = lastModifiedBy;
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
 	@CreatedBy
 	@Column(name = "created_by", nullable = false, length = 50, updatable = false)
 	private String createdBy;

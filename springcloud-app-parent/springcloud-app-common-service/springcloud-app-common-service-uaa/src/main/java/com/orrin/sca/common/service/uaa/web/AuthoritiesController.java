@@ -5,20 +5,20 @@ import com.orrin.sca.common.service.uaa.domain.SysAuthoritiesEntity;
 import com.orrin.sca.common.service.uaa.service.SysAuthoritiesResourcesService;
 import com.orrin.sca.common.service.uaa.web.vo.AuthoritiesAndResources;
 import com.orrin.sca.common.service.uaa.web.vo.AuthoritiesRequestParams;
+import com.orrin.sca.component.jpa.dao.Range;
 import com.orrin.sca.component.utils.string.LocalStringUtils;
 import com.orrin.sca.framework.core.model.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/authorities")
+@RequestMapping("/api/authority")
 public class AuthoritiesController {
 
     @Autowired
@@ -33,8 +33,35 @@ public class AuthoritiesController {
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
-        Pageable pageable = new PageRequest(0, 100000, Sort.Direction.ASC, "authorityId");
-        Page<SysAuthoritiesEntity> resourcesPage = sysAuthoritiesRepository.findAll(pageable);
+
+        SysAuthoritiesEntity queryEntity = new  SysAuthoritiesEntity();
+        queryEntity.setAuthorityMark(authoritiesRequestParams.getAuthorityMark());
+
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("authorityMark", match -> match.contains());
+
+
+        if(StringUtils.hasText(authoritiesRequestParams.getMessage())){
+            queryEntity.setMessage(authoritiesRequestParams.getMessage());
+            exampleMatcher.withMatcher("message", match -> match.contains());
+        }
+
+        if(StringUtils.hasText(authoritiesRequestParams.getAuthorityName())){
+            queryEntity.setAuthorityName(authoritiesRequestParams.getAuthorityName());
+            exampleMatcher.withMatcher("authorityName", match -> match.contains());
+        }
+
+        Example<SysAuthoritiesEntity> entityExample = Example.of(queryEntity, exampleMatcher);
+
+        com.orrin.sca.component.jpa.dao.Range<SysAuthoritiesEntity> rangeCreatedDate = new com.orrin.sca.component.jpa.dao.Range<>("createdDate", authoritiesRequestParams.getCreatedDateStart(),authoritiesRequestParams.getCreatedDateEnd());
+
+        List<Range<SysAuthoritiesEntity>> rangeList = new ArrayList<>();
+        rangeList.add(rangeCreatedDate);
+
+
+        Pageable pageable = new PageRequest(authoritiesRequestParams.getQueryPage(), authoritiesRequestParams.getSize(), Sort.Direction.ASC, "authorityId");
+        Page<SysAuthoritiesEntity> resourcesPage = sysAuthoritiesRepository.queryByExampleWithRange(entityExample, rangeList, pageable);
         responseResult.setData(resourcesPage);
 
         return responseResult;
