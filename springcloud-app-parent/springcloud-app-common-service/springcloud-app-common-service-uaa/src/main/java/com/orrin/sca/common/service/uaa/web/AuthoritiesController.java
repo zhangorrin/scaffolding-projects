@@ -35,12 +35,12 @@ public class AuthoritiesController {
 
 
         SysAuthoritiesEntity queryEntity = new  SysAuthoritiesEntity();
-        queryEntity.setAuthorityMark(authoritiesRequestParams.getAuthorityMark());
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching();
 
-
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
-                .withMatcher("authorityMark", match -> match.contains());
-
+        if(StringUtils.hasText(authoritiesRequestParams.getAuthorityMark())){
+            queryEntity.setAuthorityMark(authoritiesRequestParams.getAuthorityMark());
+            exampleMatcher.withMatcher("authorityMark", match -> match.contains());
+        }
 
         if(StringUtils.hasText(authoritiesRequestParams.getMessage())){
             queryEntity.setMessage(authoritiesRequestParams.getMessage());
@@ -73,6 +73,12 @@ public class AuthoritiesController {
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
+        if(sysAuthoritiesEntity.getAuthorityMark() == null || !sysAuthoritiesEntity.getAuthorityMark().startsWith("AUTH_")){
+            responseResult.setResponseCode("10000");
+            responseResult.setResponseMsg("authorityMark must start with 'AUTH_' !");
+            return responseResult;
+        }
+
         if(!StringUtils.hasText(sysAuthoritiesEntity.getAuthorityId())) {
             sysAuthoritiesEntity.setAuthorityId(LocalStringUtils.uuidLowerCase());
         }
@@ -97,7 +103,26 @@ public class AuthoritiesController {
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
-        sysAuthoritiesResourcesService.deleteByAuthorityId(authorityId);
+        long countCheck = sysAuthoritiesResourcesService.countByAuthorityId(authorityId);
+
+        if(countCheck > 0){
+            responseResult.setResponseCode("10000");
+            responseResult.setResponseMsg(" authority has " + countCheck + " resources, please delete resources under authority first !");
+            return responseResult;
+        }
+
+        sysAuthoritiesRepository.delete(authorityId);
+
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/andresource/{authorityId}/{resourceId}", method = RequestMethod.DELETE)
+    public ResponseResult<Void> delete(@PathVariable("authorityId") String authorityId, @PathVariable("resourceId") String resourceId) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        responseResult.setResponseCode("00000");
+        responseResult.setResponseMsg("");
+
+        sysAuthoritiesResourcesService.deleteByAuthorityIdAndResourceId(authorityId, resourceId);
 
         return responseResult;
     }
@@ -144,7 +169,10 @@ public class AuthoritiesController {
             size = "10";
         }
 
-        ResponseResult<AuthoritiesAndResources> responseResult = sysAuthoritiesResourcesService.findAuthoritiesAndResources(authorityId,resourceName, Integer.parseInt(page), Integer.parseInt(size));
+        int queryPage = Integer.parseInt(page);
+        queryPage = queryPage > 0 ? (queryPage-1):queryPage;
+
+        ResponseResult<AuthoritiesAndResources> responseResult = sysAuthoritiesResourcesService.findAuthoritiesAndResources(authorityId,resourceName, queryPage, Integer.parseInt(size));
         return responseResult;
     }
 }

@@ -11,6 +11,7 @@ import com.orrin.sca.framework.core.model.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -99,8 +100,21 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 	}
 
 	@Override
+	@Transactional
 	public void deleteByAuthorityId(String authorityId) {
 		sysAuthoritiesResourcesRepository.deleteByAuthorityId(authorityId);
+	}
+
+	@Override
+	@Transactional
+	public long countByAuthorityId(String authorityId) {
+		return sysAuthoritiesResourcesRepository.countByAuthorityId(authorityId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByAuthorityIdAndResourceId(String authorityId, String resourceId) {
+		sysAuthoritiesResourcesRepository.deleteByAuthorityIdAndResourceId(authorityId, resourceId);
 	}
 
 

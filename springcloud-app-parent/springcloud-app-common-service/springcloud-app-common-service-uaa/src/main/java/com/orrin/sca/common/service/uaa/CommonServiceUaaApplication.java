@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author orrin.zhang on 2017/7/28.
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableDiscoveryClient
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaRepositories(repositoryBaseClass = BaseJPARepositoryImpl.class)
+@EnableTransactionManagement
 public class CommonServiceUaaApplication extends ParentApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CommonServiceUaaApplication.class, args);

@@ -35,6 +35,7 @@ public interface SysAuthoritiesResourcesRepository extends BaseJPARepository<Sys
             "  sr.last_modified_date " +
             " FROM sys_resources sr , sys_authorities_resources sar" +
             " WHERE sr.resource_id = sar.resource_id" +
+            " AND sr.enable = '1' " +
             " AND sar.authority_id = :authorityId" +
             " AND sr.resource_name LIKE CONCAT('%',IFNULL(:resourceName, sr.resource_name),'%')" +
             " limit  :start, :size",
@@ -53,4 +54,8 @@ public interface SysAuthoritiesResourcesRepository extends BaseJPARepository<Sys
             " AND sr.resource_name LIKE CONCAT('%',IFNULL(:resourceName, sr.resource_name),'%')",
             nativeQuery = true)
     List<Object> countResourcesByAuthorityId(@Param("authorityId") String authorityId, @Param("resourceName") String resourceName);
+
+    long countByAuthorityId(String authorityId);
+
+    void deleteByAuthorityIdAndResourceId(String authorityId, String resourceId);
 }
