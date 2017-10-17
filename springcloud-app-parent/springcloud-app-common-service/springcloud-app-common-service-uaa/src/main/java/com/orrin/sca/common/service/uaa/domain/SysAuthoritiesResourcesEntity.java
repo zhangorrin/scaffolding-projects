@@ -11,7 +11,6 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
   @Column(name = "ID")
   private String id;
 
@@ -21,6 +20,7 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
   @Column(name = "AUTHORITY_ID")
   private String authorityId;
 
+  @Override
   public String getId() {
     return id;
   }
@@ -29,6 +29,7 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
     this.id = id;
   }
 
+  @Override
   public String getResourceId() {
     return resourceId;
   }
@@ -37,6 +38,7 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
     this.resourceId = resourceId;
   }
 
+  @Override
   public String getAuthorityId() {
     return authorityId;
   }

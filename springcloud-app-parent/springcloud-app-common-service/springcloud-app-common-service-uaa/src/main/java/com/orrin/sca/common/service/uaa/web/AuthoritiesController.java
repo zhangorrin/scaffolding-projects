@@ -2,6 +2,7 @@ package com.orrin.sca.common.service.uaa.web;
 
 import com.orrin.sca.common.service.uaa.dao.SysAuthoritiesRepository;
 import com.orrin.sca.common.service.uaa.domain.SysAuthoritiesEntity;
+import com.orrin.sca.common.service.uaa.domain.SysResourcesEntity;
 import com.orrin.sca.common.service.uaa.service.SysAuthoritiesResourcesService;
 import com.orrin.sca.common.service.uaa.web.vo.AuthoritiesAndResources;
 import com.orrin.sca.common.service.uaa.web.vo.AuthoritiesRequestParams;
@@ -173,6 +174,48 @@ public class AuthoritiesController {
         queryPage = queryPage > 0 ? (queryPage-1):queryPage;
 
         ResponseResult<AuthoritiesAndResources> responseResult = sysAuthoritiesResourcesService.findAuthoritiesAndResources(authorityId,resourceName, queryPage, Integer.parseInt(size));
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/andresource/{authorityId}", method = RequestMethod.POST)
+    public ResponseResult<Void> getSysAuthoritiesAndResources(@PathVariable("authorityId") String authorityId,@RequestBody List<SysResourcesEntity> resources, HttpServletRequest request) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        responseResult.setResponseCode("00000");
+        responseResult.setResponseMsg("");
+
+        sysAuthoritiesResourcesService.addResourcesUnderAuthoritiy(authorityId, resources);
+
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/andresource/not/{authorityId}", method = RequestMethod.GET)
+    public ResponseResult<Page<SysResourcesEntity>> getResourcesNotUnderAuthority(@PathVariable("authorityId") String authorityId, HttpServletRequest request) {
+
+        String resourceName = request.getParameter("resourceName");
+        String page = request.getParameter("page");
+        String size = request.getParameter("size");
+
+        if(!StringUtils.hasText(resourceName)){
+            resourceName = null;
+        }
+
+        if(!StringUtils.hasText(page)){
+            page = "0";
+        }
+
+        if(!StringUtils.hasText(size)){
+            size = "10";
+        }
+
+        int queryPage = Integer.parseInt(page);
+        queryPage = queryPage > 0 ? (queryPage-1):queryPage;
+
+        Page<SysResourcesEntity> resourcesEntities = sysAuthoritiesResourcesService.findResourcesNotUnderAuthoritiy(authorityId,resourceName, queryPage, Integer.parseInt(size));
+        ResponseResult<Page<SysResourcesEntity>> responseResult = new ResponseResult<>();
+        responseResult.setResponseCode("00000");
+        responseResult.setResponseMsg("");
+        responseResult.setData(resourcesEntities);
+
         return responseResult;
     }
 }
