@@ -41,4 +41,9 @@ public class SysAuthoritiesServiceImpl implements SysAuthoritiesService {
 		sysAuthoritiesRepository.delete(authorityId);
 		sysAuthoritiesResourcesService.deleteByAuthorityId(authorityId);
 	}
+
+	@Override
+	public SysAuthoritiesEntity findOne(String authorityId) {
+		return sysAuthoritiesRepository.findOne(authorityId);
+	}
 }

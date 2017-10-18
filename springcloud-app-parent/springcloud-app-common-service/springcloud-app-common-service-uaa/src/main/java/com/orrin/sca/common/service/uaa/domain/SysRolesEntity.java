@@ -11,7 +11,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
   @Column(name = "ROLE_ID")
   private String roleId;
 
@@ -22,14 +21,15 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
   private String roleDesc;
 
   @Column(name = "ENABLE")
-  private Long enable;
+  private Boolean enable;
 
   @Column(name = "ISSYS")
-  private Long issys;
+  private Boolean issys;
 
   @Column(name = "MODULE_ID")
   private String moduleId;
 
+  @Override
   public String getRoleId() {
     return roleId;
   }
@@ -38,6 +38,7 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleId = roleId;
   }
 
+  @Override
   public String getRoleName() {
     return roleName;
   }
@@ -46,6 +47,7 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleName = roleName;
   }
 
+  @Override
   public String getRoleDesc() {
     return roleDesc;
   }
@@ -54,22 +56,25 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleDesc = roleDesc;
   }
 
-  public Long getEnable() {
+  @Override
+  public Boolean getEnable() {
     return enable;
   }
 
-  public void setEnable(Long enable) {
+  public void setEnable(Boolean enable) {
     this.enable = enable;
   }
 
-  public Long getIssys() {
+  @Override
+  public Boolean getIssys() {
     return issys;
   }
 
-  public void setIssys(Long issys) {
+  public void setIssys(Boolean issys) {
     this.issys = issys;
   }
 
+  @Override
   public String getModuleId() {
     return moduleId;
   }

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("sysRolesRepository")
 public interface SysRolesRepository extends BaseJPARepository<SysRolesEntity, String> {
-
+    SysRolesEntity findByRoleName(String roleName);
 }

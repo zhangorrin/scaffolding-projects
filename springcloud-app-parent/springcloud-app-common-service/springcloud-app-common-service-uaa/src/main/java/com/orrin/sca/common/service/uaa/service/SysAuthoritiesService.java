@@ -12,4 +12,6 @@ public interface SysAuthoritiesService {
 	//Page<SysAuthoritiesEntity> findCriteria(Integer page, Integer size, SysAuthoritiesEntity sysAuthorities);
 
 	void deleteAuthority(String authorityId);
+
+	SysAuthoritiesEntity findOne(String authorityId);
 }

@@ -10,9 +10,9 @@ public interface SysRoles extends AbstractAuditingInterface {
 
   public String getRoleDesc();
 
-  public Long getEnable();
+  public Boolean getEnable();
 
-  public Long getIssys();
+  public Boolean getIssys();
 
   public String getModuleId();
 

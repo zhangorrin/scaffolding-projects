@@ -9,4 +9,6 @@ import org.springframework.data.domain.Page;
 public interface SysRolesService {
 	Page<SysRolesEntity> findNoCriteria(Integer page, Integer size);
 	//Page<SysRolesEntity> findCriteria(Integer page, Integer size, SysRolesEntity sysRoles);
+
+	SysRolesEntity findOne(String roleId);
 }

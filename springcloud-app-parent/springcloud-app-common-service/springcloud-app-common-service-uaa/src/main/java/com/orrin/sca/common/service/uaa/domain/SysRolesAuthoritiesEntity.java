@@ -10,7 +10,6 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
 
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue
   @Column(name = "ID")
   private String id;
 
@@ -20,6 +19,7 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
   @Column(name = "ROLE_ID")
   private String roleId;
 
+  @Override
   public String getId() {
     return id;
   }
@@ -28,6 +28,7 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
     this.id = id;
   }
 
+  @Override
   public String getAuthorityId() {
     return authorityId;
   }
@@ -36,6 +37,7 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
     this.authorityId = authorityId;
   }
 
+  @Override
   public String getRoleId() {
     return roleId;
   }

@@ -24,7 +24,7 @@ public interface SysModules extends AbstractAuditingInterface {
 
   public String getController();
 
-  public Long getEnable();
+  public Boolean getEnable();
 
   public Long getPriority() ;
 }

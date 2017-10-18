@@ -24,6 +24,11 @@ public class SysRolesServiceImpl implements SysRolesService {
 		return sysRolesRepository.findAll(pageable);
 	}
 
+	@Override
+	public SysRolesEntity findOne(String roleId) {
+		return sysRolesRepository.findOne(roleId);
+	}
+
 	/*@Override
 	public Page<SysRoles> findCriteria(Integer page, Integer size, SysRoles sysRoles) {
 		Pageable pageable = new PageRequest(page, size);
