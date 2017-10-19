@@ -2,11 +2,13 @@ package com.orrin.sca.common.service.uaa.service.impl;
 
 import com.orrin.sca.common.service.uaa.dao.SysUsersRepository;
 import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
+import com.orrin.sca.common.service.uaa.service.SysUsersRolesService;
 import com.orrin.sca.common.service.uaa.service.SysUsersService;
 import com.orrin.sca.component.jpa.dao.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -19,6 +21,9 @@ public class SysUsersServiceImpl implements SysUsersService {
 
 	@Autowired
 	private SysUsersRepository sysUsersRepository;
+
+	@Autowired
+	private SysUsersRolesService sysUsersRolesService;
 
 	@Override
 	public Page<SysUsersEntity> findSysUsersNoCriteria(Integer page, Integer size) {
@@ -88,6 +93,7 @@ public class SysUsersServiceImpl implements SysUsersService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public SysUsersEntity saveAndFlush(SysUsersEntity sysUsersEntity) {
 		if(sysUsersEntity!=null && !StringUtils.hasText(sysUsersEntity.getPassword())){
 			sysUsersEntity.setPassword("123456");
@@ -96,7 +102,9 @@ public class SysUsersServiceImpl implements SysUsersService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public void deleteByUserId(String userId) {
 		sysUsersRepository.delete(userId);
+		sysUsersRolesService.deleteByUserId(userId);
 	}
 }

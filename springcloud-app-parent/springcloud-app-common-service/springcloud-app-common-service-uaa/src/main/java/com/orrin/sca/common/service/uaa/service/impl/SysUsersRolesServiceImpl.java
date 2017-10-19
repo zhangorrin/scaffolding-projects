@@ -1,13 +1,22 @@
 package com.orrin.sca.common.service.uaa.service.impl;
 
 import com.orrin.sca.common.service.uaa.dao.SysUsersRolesRepository;
+import com.orrin.sca.common.service.uaa.domain.SysRolesEntity;
+import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
 import com.orrin.sca.common.service.uaa.domain.SysUsersRolesEntity;
+import com.orrin.sca.common.service.uaa.service.SysRolesService;
 import com.orrin.sca.common.service.uaa.service.SysUsersRolesService;
+import com.orrin.sca.common.service.uaa.service.SysUsersService;
+import com.orrin.sca.common.service.uaa.web.vo.RoleRequestParams;
+import com.orrin.sca.component.utils.string.LocalStringUtils;
+import com.orrin.sca.framework.core.exception.BusinessException;
+import com.orrin.sca.framework.core.model.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +28,12 @@ public class SysUsersRolesServiceImpl implements SysUsersRolesService {
 
 	@Autowired
 	private SysUsersRolesRepository sysUsersRolesRepository;
+
+	@Autowired
+	private SysUsersService sysUsersService;
+
+	@Autowired
+	private SysRolesService rolesService;
 
 	@Override
 	public Page<SysUsersRolesEntity> findNoCriteria(Integer page, Integer size) {
@@ -55,4 +70,71 @@ public class SysUsersRolesServiceImpl implements SysUsersRolesService {
 	public List<SysUsersRolesEntity> findDistinctByUserId(String userId) {
 		return sysUsersRolesRepository.findDistinctByUserId(userId);
 	}
+
+	@Override
+	public ResponseResult<Page<SysRolesEntity>> findRolesUnderUser(String userId, RoleRequestParams roleRequestParams) {
+		ResponseResult<Page<SysRolesEntity>> responseResult = new ResponseResult<>();
+		responseResult.setResponseCode("00000");
+		Pageable pageable = new PageRequest(roleRequestParams.getQueryPage(), roleRequestParams.getSize());
+		responseResult.setData(sysUsersRolesRepository.findRolesUnderUser(userId, roleRequestParams.getRoleName(), roleRequestParams.getRoleDesc(),pageable));
+		return responseResult;
+	}
+
+	@Override
+	public ResponseResult<Page<SysRolesEntity>> findRolesNotUnderUser(String userId, RoleRequestParams roleRequestParams) {
+		ResponseResult<Page<SysRolesEntity>> responseResult = new ResponseResult<>();
+		responseResult.setResponseCode("00000");
+		Pageable pageable = new PageRequest(roleRequestParams.getQueryPage(), roleRequestParams.getSize());
+		responseResult.setData(sysUsersRolesRepository.findRolesNotUnderUser(userId, roleRequestParams.getRoleName(), roleRequestParams.getRoleDesc(),pageable));
+		return responseResult;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ResponseResult<Void> deleteRoleUnderUser(String userId, String roleId) {
+		ResponseResult<Void> responseResult = new ResponseResult<>();
+		responseResult.setResponseCode("00000");
+		sysUsersRolesRepository.deleteByUserIdAndRoleId(userId, roleId);
+		return responseResult;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ResponseResult<Void> addRolesUnderUser(String userId, List<SysRolesEntity> roles) {
+		ResponseResult<Void> responseResult = new ResponseResult<>();
+		responseResult.setResponseCode("00000");
+
+		SysUsersEntity userCheck = sysUsersService.findByUserId(userId);
+		if(userCheck == null){
+			throw new BusinessException("10000", "can not find user by userId = " + userId);
+		}
+		if(roles != null && roles.size() > 0 ) {
+			SysUsersRolesEntity sure = new SysUsersRolesEntity();
+			sure.setUserId(userId);
+			for(SysRolesEntity sre : roles) {
+				SysRolesEntity roleCheck = rolesService.findOne(sre.getRoleId());
+				if(roleCheck == null) {
+					throw new BusinessException("10000", "can not find role by roleId = " + sre.getRoleId());
+				}
+
+				SysUsersRolesEntity sureCheck = sysUsersRolesRepository.findByUserIdAndRoleId(userId, roleCheck.getRoleId());
+				if(sureCheck != null) {
+					throw new BusinessException("10000", "role (roleId = " + sre.getRoleId() + " ) under user ( userId = " + userId + " ) exists !");
+				}
+
+				sure.setId(LocalStringUtils.uuidLowerCase());
+				sure.setRoleId(roleCheck.getRoleId());
+				sysUsersRolesRepository.save(sure);
+			}
+		}
+
+		return responseResult;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteByUserId(String userId) {
+		sysUsersRolesRepository.deleteByUserId(userId);
+	}
+
 }

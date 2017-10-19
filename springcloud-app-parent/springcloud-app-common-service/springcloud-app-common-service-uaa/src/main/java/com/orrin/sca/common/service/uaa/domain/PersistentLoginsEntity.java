@@ -15,7 +15,6 @@ public class PersistentLoginsEntity extends AbstractAuditingEntity implements Pe
   private String username;
 
   @Id
-  @GeneratedValue
   @Column(name = "SERIES")
   private String series;
 

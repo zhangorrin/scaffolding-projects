@@ -1,7 +1,10 @@
 package com.orrin.sca.common.service.uaa.web;
 
+import com.orrin.sca.common.service.uaa.domain.SysRolesEntity;
 import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
+import com.orrin.sca.common.service.uaa.service.SysUsersRolesService;
 import com.orrin.sca.common.service.uaa.service.SysUsersService;
+import com.orrin.sca.common.service.uaa.web.vo.RoleRequestParams;
 import com.orrin.sca.common.service.uaa.web.vo.UserRequestParams;
 import com.orrin.sca.common.service.uaa.web.vo.UserUpdatePwdRequestParams;
 import com.orrin.sca.component.jpa.dao.Range;
@@ -16,10 +19,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,6 +35,9 @@ public class UserController {
 
     @Autowired
     private RedisTokenStore redisTokenStore;
+
+    @Autowired
+    private SysUsersRolesService sysUsersRolesService;
 
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     @JSON(type = SysUsersEntity.class, filter = "password")
@@ -159,6 +162,35 @@ public class UserController {
         responseResult.setResponseCode("00000");
 
         sysUsersService.deleteByUserId(userId);
+
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/{userId}/roles", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Page<SysRolesEntity>> findRolesUnderUser(@PathVariable("userId") String userId, RoleRequestParams roleRequestParams, HttpServletRequest request){
+        ResponseResult<Page<SysRolesEntity>> responseResult = sysUsersRolesService.findRolesUnderUser(userId, roleRequestParams);
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/{userId}/roles/not", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Page<SysRolesEntity>> findRolesNotUnderUser(@PathVariable("userId") String userId, RoleRequestParams roleRequestParams, HttpServletRequest request){
+        ResponseResult<Page<SysRolesEntity>> responseResult = sysUsersRolesService.findRolesNotUnderUser(userId, roleRequestParams);
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/{userId}/role/{roleId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseResult<Void> deleteRoleUnderUser(@PathVariable("userId") String userId, @PathVariable("roleId") String roleId, HttpServletRequest request){
+        ResponseResult<Void> responseResult = sysUsersRolesService.deleteRoleUnderUser(userId,roleId);
+        return responseResult;
+    }
+
+    @RequestMapping(path = "/{userId}/roles", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult<Void> addRoleUnderUser(@PathVariable("userId") String userId, @RequestBody List<SysRolesEntity> roles, HttpServletRequest request){
+        ResponseResult<Void> responseResult = sysUsersRolesService.addRolesUnderUser(userId, roles);
 
         return responseResult;
     }

@@ -113,6 +113,11 @@ public class SysRolesAuthoritiesServiceImpl implements SysRolesAuthoritiesServic
 					throw new BusinessException("10000", " can not find Authority by authorityId = " + sae.getAuthorityId() + " !");
 				}
 
+				SysRolesAuthoritiesEntity sraeCheck = sysRolesAuthoritiesRepository.findByAuthorityIdAndRoleId(saeCheck.getAuthorityId(), roleCheck.getRoleId());
+				if(sraeCheck != null) {
+					throw new BusinessException("10000", " Authority ( authorityId = " + sae.getAuthorityId() + " ) under Role (roleId = " + roleCheck.getRoleId() +" )  exists!");
+				}
+
 				sysRolesAuthoritiesEntity.setId(LocalStringUtils.uuidLowerCase());
 				sysRolesAuthoritiesEntity.setAuthorityId(saeCheck.getAuthorityId());
 				sysRolesAuthoritiesRepository.save(sysRolesAuthoritiesEntity);

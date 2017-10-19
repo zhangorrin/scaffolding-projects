@@ -10,7 +10,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
 
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue
   @Column(name = "client_id")
   private String clientId;
 

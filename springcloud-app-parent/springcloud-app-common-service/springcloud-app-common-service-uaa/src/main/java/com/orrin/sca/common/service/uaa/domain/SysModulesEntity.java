@@ -11,7 +11,6 @@ public class SysModulesEntity extends AbstractAuditingEntity implements SysModul
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
   @Column(name = "MODULE_ID")
   private String moduleId;
 
