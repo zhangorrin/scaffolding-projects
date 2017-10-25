@@ -1,5 +1,6 @@
 package com.orrin.sca.common.service.uaa.service.impl;
 
+import com.orrin.sca.common.service.uaa.core.secure.URLFilterInvocationSecurityMetadataSource;
 import com.orrin.sca.common.service.uaa.dao.SysRolesAuthoritiesRepository;
 import com.orrin.sca.common.service.uaa.domain.SysAuthoritiesEntity;
 import com.orrin.sca.common.service.uaa.domain.SysRolesAuthoritiesEntity;
@@ -36,6 +37,9 @@ public class SysRolesAuthoritiesServiceImpl implements SysRolesAuthoritiesServic
 	@Autowired
 	private SysAuthoritiesService sysAuthoritiesService;
 
+	@Autowired
+	private URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
+
 	@Override
 	public Page<SysRolesAuthoritiesEntity> findNoCriteria(Integer page, Integer size) {
 		Pageable pageable = new PageRequest(page, size);
@@ -56,6 +60,7 @@ public class SysRolesAuthoritiesServiceImpl implements SysRolesAuthoritiesServic
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteByAuthorityIdAndRoleId(String authorityId, String roleId) {
 		sysRolesAuthoritiesRepository.deleteByAuthorityIdAndRoleId(authorityId, roleId);
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 	}
 
 	@Override
@@ -123,7 +128,7 @@ public class SysRolesAuthoritiesServiceImpl implements SysRolesAuthoritiesServic
 				sysRolesAuthoritiesRepository.save(sysRolesAuthoritiesEntity);
 			}
 		}
-
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 		return responseResult;
 	}
 

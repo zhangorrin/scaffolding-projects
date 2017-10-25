@@ -8,6 +8,7 @@ import com.orrin.sca.common.service.uaa.web.vo.RoleRequestParams;
 import com.orrin.sca.common.service.uaa.web.vo.UserRequestParams;
 import com.orrin.sca.common.service.uaa.web.vo.UserUpdatePwdRequestParams;
 import com.orrin.sca.component.jpa.dao.Range;
+import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.utils.json.annotation.JSON;
 import com.orrin.sca.component.utils.security.SecurityUtils;
 import com.orrin.sca.component.utils.string.LocalStringUtils;
@@ -143,6 +144,7 @@ public class UserController {
         return responseResult;
     }
 
+    @ResourcePrivilege(autoAdd2DB=false, resourceGlobalUniqueId = "9")
     @RequestMapping(path = "/{userId}", method = RequestMethod.GET)
     @JSON(type = SysUsersEntity.class, filter = "password")
     public ResponseResult<SysUsersEntity> getByUserId(@PathVariable("userId") String userId, HttpServletRequest request){
@@ -155,6 +157,7 @@ public class UserController {
         return responseResult;
     }
 
+    @ResourcePrivilege(autoAdd2DB=false, resourceGlobalUniqueId = "11")
     @RequestMapping(path = "/{userId}", method = RequestMethod.DELETE)
     @JSON(type = SysUsersEntity.class, filter = "password")
     public ResponseResult deleteByUserId(@PathVariable("userId") String userId, HttpServletRequest request){

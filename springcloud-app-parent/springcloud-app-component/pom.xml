@@ -23,6 +23,7 @@
         <module>springcloud-app-component-activiti</module>
         <module>springcloud-app-component-elasticsearch</module>
         <module>springcloud-app-component-privilege</module>
+        <module>springcloud-app-component-session-redis</module>
     </modules>
 
 

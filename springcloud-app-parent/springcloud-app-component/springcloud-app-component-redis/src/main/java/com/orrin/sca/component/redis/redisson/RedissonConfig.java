@@ -29,21 +29,21 @@ public class RedissonConfig {
 		logger.info("is cluster ? = {}", clusterFlag);
 
 		Config config = new Config();
-		config.setUseLinuxNativeEpoll(true);
 
 		if (clusterFlag) {
+			config.setUseLinuxNativeEpoll(true);
 			List<String> nodes = redisProperties.getCluster().getNodes();
 			String[] nodeStrs = new String[nodes.size()];
 			for (int i = 0; i < nodes.size(); i++) {
 				nodeStrs[i] = "redis://" + nodes.get(i);
 				logger.info("redis node = {}", nodes.get(i));
 			}
-			config.useClusterServers().addNodeAddress(nodeStrs);
+			config.useClusterServers().setScanInterval(2000).addNodeAddress(nodeStrs);
 		} else {
 			logger.info("redis host = {}", redisProperties.getHost());
 			logger.info("redis port = {}", redisProperties.getPort());
 			//可以用"rediss://"来启用SSL连接
-			config.useClusterServers().addNodeAddress("redis://" + redisProperties.getHost() + ":" + String.valueOf(redisProperties.getPort()));
+			config.useSingleServer().setAddress("redis://" + redisProperties.getHost() + ":" + String.valueOf(redisProperties.getPort()));
 		}
 
 		RedissonClient redisson = Redisson.create(config);

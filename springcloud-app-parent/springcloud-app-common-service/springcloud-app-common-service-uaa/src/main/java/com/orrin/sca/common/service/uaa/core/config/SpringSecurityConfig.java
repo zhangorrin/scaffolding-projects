@@ -137,6 +137,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// 开启默认登录页面
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+			@Override
 			public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
 				fsi.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
 				fsi.setAuthenticationManager(authenticationManagerBean());

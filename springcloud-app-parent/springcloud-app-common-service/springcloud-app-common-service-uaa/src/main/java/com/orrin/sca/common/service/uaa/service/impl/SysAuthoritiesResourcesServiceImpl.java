@@ -1,5 +1,6 @@
 package com.orrin.sca.common.service.uaa.service.impl;
 
+import com.orrin.sca.common.service.uaa.core.secure.URLFilterInvocationSecurityMetadataSource;
 import com.orrin.sca.common.service.uaa.dao.SysAuthoritiesRepository;
 import com.orrin.sca.common.service.uaa.dao.SysAuthoritiesResourcesRepository;
 import com.orrin.sca.common.service.uaa.dao.SysResourcesRepository;
@@ -35,6 +36,9 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 
 	@Autowired
 	private SysResourcesRepository sysResourcesRepository;
+
+	@Autowired
+	private URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
 
 	@Override
 	public Page<SysAuthoritiesResourcesEntity> findNoCriteria(Integer page, Integer size) {
@@ -129,6 +133,7 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteByAuthorityIdAndResourceId(String authorityId, String resourceId) {
 		sysAuthoritiesResourcesRepository.deleteByAuthorityIdAndResourceId(authorityId, resourceId);
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 	}
 
 	@Override
@@ -177,7 +182,7 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 				sysAuthoritiesResourcesRepository.save(sysAuthoritiesResourcesEntity);
 			}
 		}
-
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 	}
 
 

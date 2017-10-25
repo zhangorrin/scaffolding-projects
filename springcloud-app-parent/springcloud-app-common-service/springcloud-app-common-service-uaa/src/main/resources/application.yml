@@ -49,7 +49,7 @@ security:
     enabled: false
 #  user:
 #    password: password
-  ignored: /css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**
+  ignored: /html/**,/css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**,/eureka/**
 
 logging:
   level:

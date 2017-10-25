@@ -178,7 +178,7 @@ public class AuthoritiesController {
     }
 
     @RequestMapping(path = "/andresource/{authorityId}", method = RequestMethod.POST)
-    public ResponseResult<Void> getSysAuthoritiesAndResources(@PathVariable("authorityId") String authorityId,@RequestBody List<SysResourcesEntity> resources, HttpServletRequest request) {
+    public ResponseResult<Void> addSysAuthoritiesAndResources(@PathVariable("authorityId") String authorityId,@RequestBody List<SysResourcesEntity> resources, HttpServletRequest request) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");

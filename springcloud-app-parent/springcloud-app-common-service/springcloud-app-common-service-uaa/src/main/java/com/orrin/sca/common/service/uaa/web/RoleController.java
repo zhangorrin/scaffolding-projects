@@ -124,7 +124,7 @@ public class RoleController {
         return responseResult;
     }
 
-    @RequestMapping(path = "/{roleId}", method = RequestMethod.GET)
+    @GetMapping(path = "/{roleId}")
     public ResponseResult<SysRolesEntity> getSysAuthoritiesEntity(@PathVariable("roleId") String roleId) {
         ResponseResult<SysRolesEntity> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
@@ -154,7 +154,7 @@ public class RoleController {
     }
 
     @RequestMapping(path = "/andauthorities/{roleId}", method = RequestMethod.POST)
-    public ResponseResult<Void> getSysAuthoritiesAndResources(@PathVariable("roleId") String roleId, @RequestBody List<SysAuthoritiesEntity> authorities, HttpServletRequest request) {
+    public ResponseResult<Void> addSysAuthoritiesAndResources(@PathVariable("roleId") String roleId, @RequestBody List<SysAuthoritiesEntity> authorities, HttpServletRequest request) {
         ResponseResult<Void> responseResult = sysRolesAuthoritiesService.addAuthoritiesUnderRole(roleId, authorities);
         return responseResult;
     }

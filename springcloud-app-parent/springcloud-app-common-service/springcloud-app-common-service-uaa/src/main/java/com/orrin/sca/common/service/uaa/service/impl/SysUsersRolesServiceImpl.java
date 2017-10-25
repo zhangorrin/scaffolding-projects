@@ -1,5 +1,6 @@
 package com.orrin.sca.common.service.uaa.service.impl;
 
+import com.orrin.sca.common.service.uaa.core.secure.URLFilterInvocationSecurityMetadataSource;
 import com.orrin.sca.common.service.uaa.dao.SysUsersRolesRepository;
 import com.orrin.sca.common.service.uaa.domain.SysRolesEntity;
 import com.orrin.sca.common.service.uaa.domain.SysUsersEntity;
@@ -34,6 +35,9 @@ public class SysUsersRolesServiceImpl implements SysUsersRolesService {
 
 	@Autowired
 	private SysRolesService rolesService;
+
+	@Autowired
+	private URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
 
 	@Override
 	public Page<SysUsersRolesEntity> findNoCriteria(Integer page, Integer size) {
@@ -95,6 +99,7 @@ public class SysUsersRolesServiceImpl implements SysUsersRolesService {
 		ResponseResult<Void> responseResult = new ResponseResult<>();
 		responseResult.setResponseCode("00000");
 		sysUsersRolesRepository.deleteByUserIdAndRoleId(userId, roleId);
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 		return responseResult;
 	}
 
@@ -127,7 +132,7 @@ public class SysUsersRolesServiceImpl implements SysUsersRolesService {
 				sysUsersRolesRepository.save(sure);
 			}
 		}
-
+		urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 		return responseResult;
 	}
 

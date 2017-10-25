@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="loginpage" content="loginpage">
 </head>
 <body>
 <div class="container">

@@ -20,16 +20,19 @@ public interface SysResourcesRepository extends BaseJPARepository<SysResourcesEn
 			"WHERE ur.role_id = ra.role_id AND ra.authority_id = ar.authority_id AND ar.resource_id = r.resource_id AND ur.user_id = :userId", nativeQuery = true)
 	List<SysResourcesEntity> findAuthResourcesByUserId(@Param("userId") String userId);
 
-	@Query(value = "SELECT DISTINCT s3.resource_path as 'resourcePath' ," +
-			" s2.authority_mark as 'authorityMark' ,  " +
-			" s3.priority as 'priority' " +
-			"FROM sys_authorities_resources s1" +
-			" JOIN sys_authorities s2 ON s1.authority_id = s2.authority_id" +
-			" JOIN sys_resources s3 ON s1.resource_id = s3.resource_id" +
-			" WHERE " +
-			" s3.resource_type = 'url'" +
-			" ORDER BY" +
-			" s3.priority DESC", nativeQuery = true)
+	@Query(value = " SELECT sr.resource_path as 'resourcePath' ," +
+			" IFNULL((SELECT group_concat(DISTINCT sa.authority_mark)" +
+			"    		FROM sys_authorities_resources sar," +
+			"	      		 sys_authorities sa" +
+			"    	   WHERE sar.resource_id = sr.resource_id" +
+			"      		 AND sar.authority_id = sa.authority_id ),'AUTH_AABBCCBUGYYY') as 'authorityMark' ," +
+			"      			sr.priority as 'priority' ," +
+			"				sr.global_unique_id as 'globalUniqueId' , " +
+			"				sr.request_method as 'requestMethod' " +
+			"    	   FROM sys_resources sr" +
+			"   	  WHERE sr.resource_type = 'URL'" +
+			"     		AND sr.enable = 1" +
+			" 	   ORDER BY sr.priority DESC ", nativeQuery = true)
 	List<Object[]> findAuthResources();
 
 	List<SysResourcesEntity> findByResourceTypeAndEnableOrderByPriorityAsc(String resourceType, boolean enable);

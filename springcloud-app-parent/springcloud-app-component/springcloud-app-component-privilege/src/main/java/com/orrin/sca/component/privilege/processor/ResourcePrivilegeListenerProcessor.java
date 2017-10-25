@@ -41,7 +41,7 @@ public class ResourcePrivilegeListenerProcessor {
     public void increaseResourcePrivilege2DB(List<ResourcePrivilegeEntity> resourcePrivilegeEntityList) {
         if(resourcePrivilegeEntityList != null && resourcePrivilegeEntityList.size() > 0){
             for(ResourcePrivilegeEntity rpe : resourcePrivilegeEntityList) {
-                sysResourceServiceApi.insert(rpe);
+                sysResourceServiceApi.insertPrivilege(rpe);
             }
         }
     }
@@ -61,11 +61,6 @@ public class ResourcePrivilegeListenerProcessor {
             ResourcePrivilege resourcePrivilege = AnnotationUtils.getAnnotation(method, ResourcePrivilege.class);
 
             RequestMapping requestMapping = AnnotationUtils.getAnnotation(method, RequestMapping.class);
-            GetMapping getMapping = AnnotationUtils.getAnnotation(method, GetMapping.class);
-            PostMapping postMapping = AnnotationUtils.getAnnotation(method, PostMapping.class);
-            PutMapping putMapping = AnnotationUtils.getAnnotation(method, PutMapping.class);
-            DeleteMapping deleteMapping = AnnotationUtils.getAnnotation(method, DeleteMapping.class);
-            PatchMapping patchMapping = AnnotationUtils.getAnnotation(method, PatchMapping.class);
 
             if(resourcePrivilege != null){
                 logger.info("getResourcePrivilegeByannotation resourceGlobalUniqueId = {},resourceName = {}",resourcePrivilege.resourceGlobalUniqueId(), resourcePrivilege.resourceName());
@@ -81,31 +76,6 @@ public class ResourcePrivilegeListenerProcessor {
 
                 if(requestMapping != null) {
                     String paths[] = (requestMapping.path()!=null)?requestMapping.path():requestMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
-                }
-
-                if(getMapping != null) {
-                    String paths[] = (getMapping.path()!=null)?getMapping.path():getMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
-                }
-
-                if(postMapping != null) {
-                    String paths[] = (postMapping.path()!=null)?postMapping.path():postMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
-                }
-
-                if(putMapping != null) {
-                    String paths[] = (putMapping.path()!=null)?putMapping.path():putMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
-                }
-
-                if(deleteMapping != null) {
-                    String paths[] = (deleteMapping.path()!=null)?deleteMapping.path():deleteMapping.value();
-                    resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
-                }
-
-                if(patchMapping != null) {
-                    String paths[] = (patchMapping.path()!=null)?patchMapping.path():patchMapping.value();
                     resourcePrivilegeEntity.setResourcePath(StringUtils.arrayToDelimitedString(paths, ","));
                 }
 
