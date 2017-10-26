@@ -14,6 +14,7 @@
     <modules>
         <module>scab-product</module>
         <module>scap-product-withoutsso</module>
+        <module>scap-product-oauth-resource</module>
     </modules>
 
     <dependencies>

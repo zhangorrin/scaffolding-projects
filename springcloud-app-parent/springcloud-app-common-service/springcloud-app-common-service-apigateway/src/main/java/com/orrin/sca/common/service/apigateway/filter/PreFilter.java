@@ -7,13 +7,13 @@ import com.orrin.sca.component.utils.json.JacksonUtils;
 import com.orrin.sca.framework.core.model.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * @author orrin.zhang on 2017/7/28.
@@ -54,9 +54,14 @@ public class PreFilter extends ZuulFilter {
 		log.info("[*]bestMatchingPattern = {}", bestMatchingPattern == null ? "null" : bestMatchingPattern.toString());
 
 		log.info(String.format("%s >>> %s", request.getMethod(), request.getRequestURL().toString()));
-		String accessToken = request.getHeader("token");
+		String accessToken = request.getHeader("Authorization");
 
 		log.info(" accessToken = {}",accessToken);
+		String AuthorizationPrefix = accessToken.substring(0, 7).toLowerCase();
+		if(AuthorizationPrefix.equalsIgnoreCase("Bearer ")) {
+			accessToken = accessToken.substring(7);
+		}
+
 
 		ResponseResult<?> responseResult = null;
 
@@ -73,12 +78,13 @@ public class PreFilter extends ZuulFilter {
 			*/
 			return null;
 		}else {
+
 			Jwt jwt = JwtHelper.decode(accessToken);
 			CoverAccessTokenModel coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
 
-			Date expDate = new Date(coverAccessTokenModel.getExp());
+			long nowTime = System.currentTimeMillis() / 1000;
 
-			if(new Date().after(expDate)){
+			if(nowTime > coverAccessTokenModel.getExp()){
 				responseResult = new ResponseResult<>();
 				responseResult.setResponseCode("10001");
 				responseResult.setResponseMsg("token is expired !");
@@ -86,6 +92,7 @@ public class PreFilter extends ZuulFilter {
 
 			if(responseResult != null) {
 				ctx.setSendZuulResponse(false);
+				ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 				ctx.setResponseStatusCode(401);
 				ctx.setResponseBody(JacksonUtils.encode(responseResult));
 				ctx.setResponseGZipped(true);

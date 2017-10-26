@@ -22,6 +22,9 @@ eureka:
 
 zuul:
   routes:
+    business-service-oauth-resource:
+      path: /business/oauthresource/**
+      serviceId: business-service-oauth-resource
     business-service-product:
       path: /business/product/**
       serviceId: business-service-product
@@ -34,5 +37,6 @@ zuul:
       #stripPrefix: false
       serviceId: common-service-uaa
   add-proxy-headers: true
+  sensitive-headers: Cookie,Set-Cookie
 info:
   version: @project.version@
