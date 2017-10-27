@@ -1,19 +1,26 @@
-package com.orrin.sca.common.service.apigateway.filter;
+package com.orrin.sca.common.service.apigateway.server.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.orrin.sca.component.jwt.CoverAccessTokenModel;
+import com.orrin.sca.component.privilege.intercept.URLFilterInvocationAuthority;
 import com.orrin.sca.component.utils.json.JacksonUtils;
 import com.orrin.sca.framework.core.model.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.netflix.zuul.filters.Route;
+import org.springframework.cloud.netflix.zuul.filters.discovery.DiscoveryClientRouteLocator;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 /**
  * @author orrin.zhang on 2017/7/28.
@@ -44,6 +51,15 @@ public class PreFilter extends ZuulFilter {
 		return true;
 	}
 
+	@Autowired
+	private DiscoveryClient discovery;
+
+	@Autowired
+	private DiscoveryClientRouteLocator routeLocator;
+
+	@Autowired
+	private URLFilterInvocationAuthority urlFilterInvocationAuthority;
+
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
@@ -62,7 +78,6 @@ public class PreFilter extends ZuulFilter {
 			accessToken = accessToken.substring(7);
 		}
 
-
 		ResponseResult<?> responseResult = null;
 
 		if (!StringUtils.hasText(accessToken)) {
@@ -80,17 +95,10 @@ public class PreFilter extends ZuulFilter {
 		}else {
 
 			Jwt jwt = JwtHelper.decode(accessToken);
-			CoverAccessTokenModel coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
 
-			long nowTime = System.currentTimeMillis() / 1000;
+			responseResult = determineAccess(jwt);
 
-			if(nowTime > coverAccessTokenModel.getExp()){
-				responseResult = new ResponseResult<>();
-				responseResult.setResponseCode("10001");
-				responseResult.setResponseMsg("token is expired !");
-			}
-
-			if(responseResult != null) {
+			if(responseResult != null && !responseResult.getResponseCode().equalsIgnoreCase("00000")) {
 				ctx.setSendZuulResponse(false);
 				ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 				ctx.setResponseStatusCode(401);
@@ -104,9 +112,31 @@ public class PreFilter extends ZuulFilter {
 				return null;
 			}
 
-
 		}
 		log.info("ok");
 		return null;
+	}
+
+	protected ResponseResult<?> determineAccess(Jwt jwt) {
+		CoverAccessTokenModel coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
+
+		ResponseResult<?> responseResult = new ResponseResult<>();
+		responseResult.setResponseCode("00000");
+
+		long nowTime = System.currentTimeMillis() / 1000;
+
+		if(nowTime > coverAccessTokenModel.getExp()){
+			responseResult = new ResponseResult<>();
+			responseResult.setResponseCode("10001");
+			responseResult.setResponseMsg("token is expired !");
+		}
+
+		RequestContext ctx = RequestContext.getCurrentContext();
+		HttpServletRequest request = ctx.getRequest();
+		Route route = routeLocator.getMatchingRoute(request.getRequestURI());
+
+		Collection<ConfigAttribute> Attributes = urlFilterInvocationAuthority.getAttributes(route.getLocation(), request);
+
+		return responseResult;
 	}
 }

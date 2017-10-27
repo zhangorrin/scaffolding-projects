@@ -19,7 +19,8 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
                             String resourceDesc, String resourcePath, Integer priority,
                             Boolean enable, Boolean issys, String moduleId, String globalUniqueId,
                             String fatherResourceId, String icon, String requestMethod,
-                            String createdBy, Date createdDate, String lastModifiedBy, Date lastModifiedDate) {
+                            String createdBy, Date createdDate, String lastModifiedBy, Date lastModifiedDate,
+                            String clientId) {
     super(createdBy,createdDate,lastModifiedBy,lastModifiedDate);
     this.resourceId = resourceId;
     this.resourceType = resourceType;
@@ -34,6 +35,7 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
     this.fatherResourceId = fatherResourceId;
     this.icon = icon;
     this.requestMethod = requestMethod;
+    this.clientId = clientId;
   }
 
   @Id
@@ -75,6 +77,9 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
 
   @Column(name = "REQUEST_METHOD")
   private String requestMethod;
+
+  @Column(name = "client_id")
+  private String clientId;
 
   public String getResourceId() {
     return resourceId;
@@ -178,5 +183,13 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
 
   public void setRequestMethod(String requestMethod) {
     this.requestMethod = requestMethod;
+  }
+
+  public String getClientId() {
+    return clientId;
+  }
+
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
   }
 }

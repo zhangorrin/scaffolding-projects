@@ -92,9 +92,10 @@ public class SysAuthoritiesResourcesServiceImpl implements SysAuthoritiesResourc
 				Date createdDate = obj[14] == null?null:(Date)obj[14];
 				String lastModifiedBy = obj[15] == null?null:obj[15].toString();
 				Date lastModifiedDate = obj[16] == null?null:(Date)obj[16];
+				String clientId = obj[17] == null?null:obj[17].toString();
 				SysResourcesEntity sre = new SysResourcesEntity(resourceId, resourceType, resourceNameT,
 						resourceDesc, resourcePath, priority, enable, issys, moduleId, globalUniqueId,
-						fatherResourceId, icon, requestMethod, createdBy, createdDate, lastModifiedBy, lastModifiedDate);
+						fatherResourceId, icon, requestMethod, createdBy, createdDate, lastModifiedBy, lastModifiedDate,clientId);
 
 				allSreList.add(sre);
 			}

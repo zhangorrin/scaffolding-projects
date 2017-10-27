@@ -13,6 +13,9 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
   @Column(name = "client_id")
   private String clientId;
 
+  @Column(name = "client_name")
+  private String clientName;
+
   @Column(name = "resource_ids")
   private String resourceIds;
 
@@ -140,5 +143,14 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
 
   public void setAutoapprove(String autoapprove) {
     this.autoapprove = autoapprove;
+  }
+
+  @Override
+  public String getClientName() {
+    return clientName;
+  }
+
+  public void setClientName(String clientName) {
+    this.clientName = clientName;
   }
 }

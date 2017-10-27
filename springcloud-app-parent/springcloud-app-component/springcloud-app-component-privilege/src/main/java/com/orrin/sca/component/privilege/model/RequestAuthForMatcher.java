@@ -1,4 +1,4 @@
-package com.orrin.sca.common.service.uaa.core.secure;
+package com.orrin.sca.component.privilege.model;
 
 import java.io.Serializable;
 

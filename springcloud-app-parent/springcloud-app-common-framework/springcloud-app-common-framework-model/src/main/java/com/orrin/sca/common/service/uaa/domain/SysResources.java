@@ -30,4 +30,6 @@ public interface SysResources extends AbstractAuditingInterface {
   public String getIcon();
 
   public String getRequestMethod();
+
+  public String getClientId();
 }

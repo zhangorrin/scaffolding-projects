@@ -1,4 +1,4 @@
-package com.orrin.sca.common.service.apigateway.filter;
+package com.orrin.sca.common.service.apigateway.server.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

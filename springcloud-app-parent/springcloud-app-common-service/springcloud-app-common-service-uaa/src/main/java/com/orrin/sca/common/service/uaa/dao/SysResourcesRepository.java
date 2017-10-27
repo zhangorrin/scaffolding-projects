@@ -35,5 +35,5 @@ public interface SysResourcesRepository extends BaseJPARepository<SysResourcesEn
 			" 	   ORDER BY sr.priority DESC ", nativeQuery = true)
 	List<Object[]> findAuthResources();
 
-	List<SysResourcesEntity> findByResourceTypeAndEnableOrderByPriorityAsc(String resourceType, boolean enable);
+	List<SysResourcesEntity> findByResourceTypeAndEnableOrderByPriorityAscClientIdAsc(String resourceType, boolean enable);
 }

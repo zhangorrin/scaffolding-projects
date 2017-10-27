@@ -1,6 +1,6 @@
 package com.orrin.sca.component.privilege.processor;
 
-import com.orrin.sca.common.service.uaa.service.SysResourceServiceApi;
+import com.orrin.sca.common.service.uaa.service.feignclient.SysResourceServiceApi;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
 import com.orrin.sca.component.utils.spring.SpringUtil;

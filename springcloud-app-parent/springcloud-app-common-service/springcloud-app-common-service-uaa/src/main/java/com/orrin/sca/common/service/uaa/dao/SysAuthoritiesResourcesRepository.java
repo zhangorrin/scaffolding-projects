@@ -34,7 +34,8 @@ public interface SysAuthoritiesResourcesRepository extends BaseJPARepository<Sys
             "  sr.created_by ," +
             "  sr.created_date ," +
             "  sr.last_modified_by ," +
-            "  sr.last_modified_date " +
+            "  sr.last_modified_date ," +
+            "  sr.client_id " +
             " FROM sys_resources sr , sys_authorities_resources sar" +
             " WHERE sr.resource_id = sar.resource_id" +
             " AND sr.enable = '1' " +
@@ -73,7 +74,8 @@ public interface SysAuthoritiesResourcesRepository extends BaseJPARepository<Sys
             "  sr.created_by ," +
             "  sr.created_date ," +
             "  sr.last_modified_by ," +
-            "  sr.last_modified_date " +
+            "  sr.last_modified_date ," +
+            "  sr.client_id " +
             " FROM sys_resources sr " +
             " WHERE sr.enable = '1' " +
             " AND NOT EXISTS (" +

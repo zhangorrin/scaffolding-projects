@@ -1,4 +1,4 @@
-package com.orrin.sca.common.service.apigateway.config;
+package com.orrin.sca.common.service.apigateway.server.config;
 
 import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Configuration;

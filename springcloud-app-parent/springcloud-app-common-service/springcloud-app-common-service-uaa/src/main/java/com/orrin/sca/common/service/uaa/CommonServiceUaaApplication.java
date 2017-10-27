@@ -3,6 +3,7 @@ package com.orrin.sca.common.service.uaa;
 import com.orrin.sca.component.jpa.dao.BaseJPARepositoryImpl;
 import com.orrin.sca.component.jpa.parent.ParentApplication;
 import com.orrin.sca.component.privilege.aop.AspectPrivilege;
+import com.orrin.sca.component.privilege.intercept.URLFilterInvocationAuthority;
 import com.orrin.sca.component.redis.redisson.RedissonConfig;
 import com.orrin.sca.component.session.redis.HttpSessionConfig;
 import com.orrin.sca.framework.core.exception.GlobalWebExceptionHandler;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -39,5 +41,9 @@ public class CommonServiceUaaApplication extends ParentApplication {
 	@Bean
 	AspectPrivilege aspectPrivilege() {
 		return new AspectPrivilege();
+	}
+
+	@Component
+	public static class URLFilterInvocationAuthorityHandler extends URLFilterInvocationAuthority {
 	}
 }

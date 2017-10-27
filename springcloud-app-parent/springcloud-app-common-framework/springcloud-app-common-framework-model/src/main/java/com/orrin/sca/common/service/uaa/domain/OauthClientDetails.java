@@ -36,4 +36,6 @@ public interface OauthClientDetails extends AbstractAuditingInterface {
 
   public String getAutoapprove() ;
 
+  public String getClientName() ;
+
 }

@@ -3,7 +3,7 @@ package com.orrin.sca.common.service.uaa.web;
 import com.orrin.sca.common.service.uaa.dao.SysResourcesRepository;
 import com.orrin.sca.common.service.uaa.domain.SysResources;
 import com.orrin.sca.common.service.uaa.domain.SysResourcesEntity;
-import com.orrin.sca.common.service.uaa.service.SysResourceServiceApi;
+import com.orrin.sca.common.service.uaa.service.feignclient.SysResourceServiceApi;
 import com.orrin.sca.common.service.uaa.service.SysResourcesService;
 import com.orrin.sca.common.service.uaa.web.vo.ResourceMoreInfo;
 import com.orrin.sca.component.menu.MenuModel;
@@ -15,7 +15,7 @@ import org.springframework.data.domain.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/resource")
@@ -55,6 +55,39 @@ public class ResourceController implements SysResourceServiceApi {
         responseResult.setData(sysResourcesEntity);
 
         return responseResult;
+    }
+
+    @Override
+    @RequestMapping(path = "/authResources", method = RequestMethod.GET)
+    public ArrayList<HashMap<String,String>> findAuthResources() {
+        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+
+        List<Object[]> result  = sysResourcesRepository.findAuthResources();
+        Iterator<Object[]> it = result.iterator();
+
+        while(it.hasNext()){
+            Object[] o = it.next();
+            HashMap<String,String> map = new HashMap<String,String>();
+            String resourcePaths = (String)o[0];
+            if(resourcePaths.contains(",")){
+                String resourcePath[] = resourcePaths.split(",");
+                for(String rp : resourcePath) {
+                    map.put("resourcePath", rp);
+                    map.put("authorityMark", (String)o[1]);
+                    map.put("globalUniqueId", (String)o[3]);
+                    map.put("requestMethod", (String)o[4]);
+                    list.add(map);
+                }
+            }else {
+                map.put("resourcePath", resourcePaths);
+                map.put("authorityMark", (String)o[1]);
+                map.put("globalUniqueId", (String)o[3]);
+                map.put("requestMethod", (String)o[4]);
+                list.add(map);
+            }
+
+        }
+        return list;
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST)
