@@ -1,6 +1,6 @@
 package com.orrin.sca.component.privilege.processor;
 
-import com.orrin.sca.common.service.uaa.service.feignclient.SysResourceServiceApi;
+import com.orrin.sca.common.service.uaa.client.feignclient.SysResourceServiceApi;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
 import com.orrin.sca.component.utils.spring.SpringUtil;
@@ -12,7 +12,8 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.util.*;

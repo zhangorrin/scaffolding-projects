@@ -1,6 +1,6 @@
 package com.orrin.sca.component.privilege.intercept;
 
-import com.orrin.sca.common.service.uaa.service.feignclient.SysResourceServiceApi;
+import com.orrin.sca.common.service.uaa.client.feignclient.SysResourceServiceApi;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.privilege.model.RequestAuthForMatcher;
 import com.orrin.sca.component.redis.config.Prefixes;

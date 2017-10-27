@@ -10,83 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springcloud-app-common-service-uaa</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>springcloud-app-common-service-uaa-server</module>
+        <module>springcloud-app-common-service-uaa-client</module>
+    </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>orrin.com</groupId>
             <artifactId>springcloud-app-component-jpa</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-common-framework-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-component-redis</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-component-session-redis</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-component-privilege</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>orrin.com</groupId>
-            <artifactId>springcloud-app-component-privilege</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
     </dependencies>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
-            </resource>
-        </resources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>
