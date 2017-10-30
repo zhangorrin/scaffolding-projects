@@ -1,6 +1,7 @@
 package com.orrin.sca.component.privilege.intercept;
 
 import com.orrin.sca.common.service.uaa.client.feignclient.SysResourceServiceApi;
+import com.orrin.sca.common.service.uaa.client.vo.ResourceBriefInfo;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilege;
 import com.orrin.sca.component.privilege.model.RequestAuthForMatcher;
 import com.orrin.sca.component.redis.config.Prefixes;
@@ -11,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.zuul.web.ZuulController;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -28,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Component("urlFilterInvocationAuthority")
 public class URLFilterInvocationAuthority implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(URLFilterInvocationAuthority.class);
@@ -120,6 +124,8 @@ public class URLFilterInvocationAuthority implements InitializingBean {
                             }
                         }
                     }
+                }else if(mappedHandler.getHandler() instanceof ZuulController) {
+
                 }
                 for(Map.Entry<String, RequestAuthForMatcher> entry : resourceAndAuth.entrySet() ) {
                     //Collection<ConfigAttribute> atts = SecurityConfig.createListFromCommaDelimitedString(entry.getValue().getAuthorityMarks());
@@ -183,8 +189,8 @@ public class URLFilterInvocationAuthority implements InitializingBean {
      * 获取到url地址和AUTH_**这种权限标识，注意：不是权限ID和资源ID
      * @return
      */
-    private ArrayList<HashMap<String,String>> getURLResourceMapping(){
-        ArrayList<HashMap<String,String>> list = sysResourceServiceApi.findAuthResources();
+    private List<ResourceBriefInfo> getURLResourceMapping(){
+        List<ResourceBriefInfo> list = sysResourceServiceApi.findAuthResources();
 
         return list;
     }
@@ -193,28 +199,24 @@ public class URLFilterInvocationAuthority implements InitializingBean {
 
         Map<String,RequestAuthForMatcher> map = new LinkedHashMap<>();
 
-        List<HashMap<String,String>> list = getURLResourceMapping();
-        Iterator<HashMap<String,String>> it = list.iterator();
-        while(it.hasNext()){
-            Map<String,String> rs = it.next();
-            String resourcePath = rs.get("resourcePath");
-            String authorityMark = rs.get("authorityMark");
-            String globalUniqueId = rs.get("globalUniqueId");
-            String requestMethod = rs.get("requestMethod");
+        List<ResourceBriefInfo> list = getURLResourceMapping();
 
-            resourcePath = resourcePath.startsWith("/") ? resourcePath : ("/" +resourcePath);
+        if(list != null){
+            for(ResourceBriefInfo rbi : list) {
+                String resourcePath = rbi.getResourcePath().startsWith("/") ? rbi.getResourcePath() : ("/" +rbi.getResourcePath());
 
-            if(map.containsKey(globalUniqueId)){
-                RequestAuthForMatcher mark = map.get(resourcePath);
-                mark.setAuthorityMarks(mark.getAuthorityMarks()+","+authorityMark);
-                map.put(globalUniqueId, mark);
-            }else{
-                RequestAuthForMatcher mark = new RequestAuthForMatcher();
-                mark.setAuthorityMarks(authorityMark);
-                mark.setGlobalUniqueId(globalUniqueId);
-                mark.setRequestMethod(requestMethod);
-                mark.setResourcePath(resourcePath);
-                map.put(globalUniqueId, mark);
+                if(map.containsKey(rbi.getGlobalUniqueId())){
+                    RequestAuthForMatcher mark = map.get(resourcePath);
+                    mark.setAuthorityMarks(mark.getAuthorityMarks()+","+rbi.getAuthorityMark());
+                    map.put(rbi.getGlobalUniqueId(), mark);
+                }else{
+                    RequestAuthForMatcher mark = new RequestAuthForMatcher();
+                    mark.setAuthorityMarks(rbi.getAuthorityMark());
+                    mark.setGlobalUniqueId(rbi.getGlobalUniqueId());
+                    mark.setRequestMethod(rbi.getRequestMethod());
+                    mark.setResourcePath(resourcePath);
+                    map.put(rbi.getGlobalUniqueId(), mark);
+                }
             }
         }
 

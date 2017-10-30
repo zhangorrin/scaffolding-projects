@@ -1,8 +1,7 @@
 package com.orrin.sca.common.service.uaa.server.core.secure;
 
 import com.orrin.sca.common.service.uaa.client.domain.SysAuthoritiesEntity;
-import com.orrin.sca.common.service.uaa.domain.SysAuthorities;
-import com.orrin.sca.common.service.uaa.domain.SysUsers;
+import com.orrin.sca.common.service.uaa.client.domain.SysUsersEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,7 +42,7 @@ public class CurrentSessionUser implements UserDetails {
 		List<GrantedAuthority> auths = new ArrayList<>();
 		List<SysAuthoritiesEntity> authoritiesTemp = this.getSysAuthorities();
 		Set<String> nonRepetitionSet = new HashSet<>();
-		for (SysAuthorities sas : authoritiesTemp) {
+		for (SysAuthoritiesEntity sas : authoritiesTemp) {
 			if(!nonRepetitionSet.contains(sas.getAuthorityMark())){
 				nonRepetitionSet.add(sas.getAuthorityMark());
 				auths.add(new SimpleGrantedAuthority(sas.getAuthorityMark()));
@@ -161,7 +160,7 @@ public class CurrentSessionUser implements UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 	}
 
-	public static CurrentSessionUser createCurrentSessionUser(SysUsers sysUsers, List<SysAuthoritiesEntity> authorities){
+	public static CurrentSessionUser createCurrentSessionUser(SysUsersEntity sysUsers, List<SysAuthoritiesEntity> authorities){
 		CurrentSessionUser sessionUser = new CurrentSessionUser();
 		BeanUtils.copyProperties(sysUsers,sessionUser);
 		sessionUser.setSysAuthorities(authorities);

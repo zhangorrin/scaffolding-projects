@@ -1,7 +1,5 @@
 package com.orrin.sca.component.menu;
 
-import com.orrin.sca.common.service.uaa.domain.SysResources;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -108,13 +106,4 @@ public class MenuModel implements Serializable {
         this.icon = icon;
     }
 
-    public static MenuModel fromSysResources(SysResources sysResources) {
-        MenuModel menuModel = new MenuModel();
-        menuModel.setTitle(sysResources.getResourceName());
-        menuModel.setDisabled(!sysResources.getEnable());
-        menuModel.setResourceId(sysResources.getResourceId());
-        menuModel.setResourceName(sysResources.getResourceName());
-        menuModel.setIcon(sysResources.getIcon());
-        return menuModel;
-    }
 }

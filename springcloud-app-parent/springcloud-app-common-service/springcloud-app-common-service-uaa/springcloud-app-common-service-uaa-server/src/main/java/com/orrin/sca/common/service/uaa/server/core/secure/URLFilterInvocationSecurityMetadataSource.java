@@ -25,7 +25,7 @@ public class URLFilterInvocationSecurityMetadataSource  implements FilterInvocat
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		urlFilterInvocationAuthority.refreshResuorceAttributes();
+		//urlFilterInvocationAuthority.refreshResuorceAttributes();
 		logger.info("资源权限列表 init finished");
 	}
 

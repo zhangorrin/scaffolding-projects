@@ -1,6 +1,5 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.SysRolesAuthorities;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
 import javax.persistence.Column;
@@ -10,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SYS_ROLES_AUTHORITIES")
-public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements SysRolesAuthorities {
+public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -23,7 +22,6 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
   @Column(name = "ROLE_ID")
   private String roleId;
 
-  @Override
   public String getId() {
     return id;
   }
@@ -32,7 +30,6 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
     this.id = id;
   }
 
-  @Override
   public String getAuthorityId() {
     return authorityId;
   }
@@ -41,7 +38,6 @@ public class SysRolesAuthoritiesEntity extends AbstractAuditingEntity implements
     this.authorityId = authorityId;
   }
 
-  @Override
   public String getRoleId() {
     return roleId;
   }

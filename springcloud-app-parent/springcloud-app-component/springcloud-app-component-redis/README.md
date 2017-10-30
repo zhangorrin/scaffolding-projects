@@ -14,7 +14,7 @@ spring:
 
 ### 2.1 原生使用方法
 ```java
-    @Autowired
+        @Autowired
     	private RedisTemplate redisTemplate;
     
     	@Resource(name= "redisTemplate")

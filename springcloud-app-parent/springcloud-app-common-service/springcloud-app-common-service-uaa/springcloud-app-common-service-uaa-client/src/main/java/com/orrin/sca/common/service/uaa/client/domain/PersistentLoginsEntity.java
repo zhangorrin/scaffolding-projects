@@ -1,14 +1,16 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.PersistentLogins;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "PERSISTENT_LOGINS")
-public class PersistentLoginsEntity extends AbstractAuditingEntity implements PersistentLogins {
+public class PersistentLoginsEntity extends AbstractAuditingEntity  {
 
   private static final long serialVersionUID = 1L;
 

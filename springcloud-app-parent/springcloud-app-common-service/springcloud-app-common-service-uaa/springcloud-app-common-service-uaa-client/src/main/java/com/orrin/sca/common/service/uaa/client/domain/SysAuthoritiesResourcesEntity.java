@@ -1,13 +1,15 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.SysAuthoritiesResources;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "SYS_AUTHORITIES_RESOURCES")
-public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implements SysAuthoritiesResources {
+public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -21,7 +23,6 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
   @Column(name = "AUTHORITY_ID")
   private String authorityId;
 
-  @Override
   public String getId() {
     return id;
   }
@@ -30,7 +31,6 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
     this.id = id;
   }
 
-  @Override
   public String getResourceId() {
     return resourceId;
   }
@@ -39,7 +39,6 @@ public class SysAuthoritiesResourcesEntity extends AbstractAuditingEntity implem
     this.resourceId = resourceId;
   }
 
-  @Override
   public String getAuthorityId() {
     return authorityId;
   }

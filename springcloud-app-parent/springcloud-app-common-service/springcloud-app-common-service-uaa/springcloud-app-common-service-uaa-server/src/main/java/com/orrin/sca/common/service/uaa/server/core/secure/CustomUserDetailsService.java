@@ -1,8 +1,8 @@
 package com.orrin.sca.common.service.uaa.server.core.secure;
 
 import com.orrin.sca.common.service.uaa.client.domain.SysAuthoritiesEntity;
+import com.orrin.sca.common.service.uaa.client.domain.SysUsersEntity;
 import com.orrin.sca.common.service.uaa.client.service.SysUsersService;
-import com.orrin.sca.common.service.uaa.domain.SysUsers;
 import com.orrin.sca.common.service.uaa.server.dao.SysAuthoritiesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		SysUsers sysUser = sysUsersService.findByUsername(username);
+		SysUsersEntity sysUser = sysUsersService.findByUsername(username);
 		if (sysUser == null) {
 			throw new UsernameNotFoundException("用户名不存在");
 		}

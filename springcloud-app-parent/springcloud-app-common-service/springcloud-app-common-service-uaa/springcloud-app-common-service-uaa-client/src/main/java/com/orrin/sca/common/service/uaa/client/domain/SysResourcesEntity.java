@@ -1,15 +1,18 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
 
-import com.orrin.sca.common.service.uaa.domain.SysResources;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
+import com.orrin.sca.component.menu.MenuModel;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
 @Table(name = "SYS_RESOURCES")
-public class SysResourcesEntity extends AbstractAuditingEntity implements SysResources {
+public class SysResourcesEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -21,7 +24,7 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
                             Boolean enable, Boolean issys, String moduleId, String globalUniqueId,
                             String fatherResourceId, String icon, String requestMethod,
                             String createdBy, Date createdDate, String lastModifiedBy, Date lastModifiedDate,
-                            String clientId) {
+                            String zuulRouteId) {
     super(createdBy,createdDate,lastModifiedBy,lastModifiedDate);
     this.resourceId = resourceId;
     this.resourceType = resourceType;
@@ -36,7 +39,7 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
     this.fatherResourceId = fatherResourceId;
     this.icon = icon;
     this.requestMethod = requestMethod;
-    this.clientId = clientId;
+    this.zuulRouteId = zuulRouteId;
   }
 
   @Id
@@ -79,8 +82,8 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
   @Column(name = "REQUEST_METHOD")
   private String requestMethod;
 
-  @Column(name = "client_id")
-  private String clientId;
+  @Column(name = "zuul_route_id", nullable = false, length = 100)
+  private String zuulRouteId;
 
   public String getResourceId() {
     return resourceId;
@@ -186,11 +189,21 @@ public class SysResourcesEntity extends AbstractAuditingEntity implements SysRes
     this.requestMethod = requestMethod;
   }
 
-  public String getClientId() {
-    return clientId;
+  public String getZuulRouteId() {
+    return zuulRouteId;
   }
 
-  public void setClientId(String clientId) {
-    this.clientId = clientId;
+  public void setZuulRouteId(String zuulRouteId) {
+    this.zuulRouteId = zuulRouteId;
+  }
+
+  public static MenuModel fromSysResources(SysResourcesEntity sysResources) {
+    MenuModel menuModel = new MenuModel();
+    menuModel.setTitle(sysResources.getResourceName());
+    menuModel.setDisabled(!sysResources.getEnable());
+    menuModel.setResourceId(sysResources.getResourceId());
+    menuModel.setResourceName(sysResources.getResourceName());
+    menuModel.setIcon(sysResources.getIcon());
+    return menuModel;
   }
 }

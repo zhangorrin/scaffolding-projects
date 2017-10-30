@@ -2,6 +2,7 @@ package com.orrin.sca.common.service.apigateway.server.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.orrin.sca.common.service.uaa.client.feignclient.SysResourceServiceApi;
 import com.orrin.sca.component.jwt.CoverAccessTokenModel;
 import com.orrin.sca.component.privilege.intercept.URLFilterInvocationAuthority;
 import com.orrin.sca.component.utils.json.JacksonUtils;
@@ -59,6 +60,9 @@ public class PreFilter extends ZuulFilter {
 
 	@Autowired
 	private URLFilterInvocationAuthority urlFilterInvocationAuthority;
+
+	@Autowired
+	private SysResourceServiceApi sysResourceServiceApi;
 
 	@Override
 	public Object run() {
@@ -126,16 +130,31 @@ public class PreFilter extends ZuulFilter {
 		long nowTime = System.currentTimeMillis() / 1000;
 
 		if(nowTime > coverAccessTokenModel.getExp()){
-			responseResult = new ResponseResult<>();
 			responseResult.setResponseCode("10001");
 			responseResult.setResponseMsg("token is expired !");
+			return responseResult;
 		}
 
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
 		Route route = routeLocator.getMatchingRoute(request.getRequestURI());
 
-		Collection<ConfigAttribute> Attributes = urlFilterInvocationAuthority.getAttributes(route.getLocation(), request);
+		Collection<ConfigAttribute> attributes = urlFilterInvocationAuthority.getAttributes(route.getPrefix(), request);
+
+		if(attributes != null && attributes.size() > 0 && coverAccessTokenModel.getAuthorities() != null && coverAccessTokenModel.getAuthorities().size() > 0){
+			boolean hasAttribute = false;
+			for(ConfigAttribute ca : attributes) {
+				if(coverAccessTokenModel.getAuthorities().contains(ca.getAttribute())) {
+					hasAttribute = true;
+					break;
+				}
+			}
+			if(!hasAttribute) {
+				responseResult.setResponseCode("10001");
+				responseResult.setResponseMsg("您可能没有权限使用网络资源 ("+ route.getFullPath() +") !");
+				return responseResult;
+			}
+		}
 
 		return responseResult;
 	}

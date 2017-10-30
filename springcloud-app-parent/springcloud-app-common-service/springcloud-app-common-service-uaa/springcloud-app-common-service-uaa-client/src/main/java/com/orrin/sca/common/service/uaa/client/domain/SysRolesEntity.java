@@ -1,6 +1,5 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.SysRoles;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
 import javax.persistence.Column;
@@ -10,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SYS_ROLES")
-public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
+public class SysRolesEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -33,7 +32,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
   @Column(name = "MODULE_ID")
   private String moduleId;
 
-  @Override
   public String getRoleId() {
     return roleId;
   }
@@ -42,7 +40,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleId = roleId;
   }
 
-  @Override
   public String getRoleName() {
     return roleName;
   }
@@ -51,7 +48,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleName = roleName;
   }
 
-  @Override
   public String getRoleDesc() {
     return roleDesc;
   }
@@ -60,7 +56,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.roleDesc = roleDesc;
   }
 
-  @Override
   public Boolean getEnable() {
     return enable;
   }
@@ -69,7 +64,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.enable = enable;
   }
 
-  @Override
   public Boolean getIssys() {
     return issys;
   }
@@ -78,7 +72,6 @@ public class SysRolesEntity extends AbstractAuditingEntity implements SysRoles {
     this.issys = issys;
   }
 
-  @Override
   public String getModuleId() {
     return moduleId;
   }

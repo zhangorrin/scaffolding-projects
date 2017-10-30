@@ -3,8 +3,8 @@ package com.orrin.sca.common.service.uaa.server.web;
 import com.orrin.sca.common.service.uaa.client.domain.SysResourcesEntity;
 import com.orrin.sca.common.service.uaa.client.feignclient.SysResourceServiceApi;
 import com.orrin.sca.common.service.uaa.client.service.SysResourcesService;
+import com.orrin.sca.common.service.uaa.client.vo.ResourceBriefInfo;
 import com.orrin.sca.common.service.uaa.client.vo.ResourceMoreInfo;
-import com.orrin.sca.common.service.uaa.domain.SysResources;
 import com.orrin.sca.common.service.uaa.server.dao.SysResourcesRepository;
 import com.orrin.sca.component.menu.MenuModel;
 import com.orrin.sca.component.privilege.annotation.ResourcePrivilegeEntity;
@@ -16,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class ResourceController implements SysResourceServiceApi {
     private SysResourcesService sysResourcesService;
 
     @Override
-    @RequestMapping(path = "/addprivilege", method = RequestMethod.POST)
-    public ResponseResult<SysResources> insertPrivilege(@RequestBody ResourcePrivilegeEntity resourcePrivilegeEntity) {
-        ResponseResult<SysResources> responseResult = new ResponseResult<>();
+    @RequestMapping(path = "/feign/addprivilege", method = RequestMethod.POST)
+    public ResponseResult<SysResourcesEntity> insertPrivilege(@RequestBody ResourcePrivilegeEntity resourcePrivilegeEntity) {
+        ResponseResult<SysResourcesEntity> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
@@ -53,7 +52,7 @@ public class ResourceController implements SysResourceServiceApi {
         sysResourcesEntity.setEnable(true);
 
 
-        sysResourcesEntity = sysResourcesRepository.saveAndFlush(sysResourcesEntity);
+        sysResourcesEntity = sysResourcesService.saveAndFlush(sysResourcesEntity);
 
         responseResult.setData(sysResourcesEntity);
 
@@ -61,41 +60,48 @@ public class ResourceController implements SysResourceServiceApi {
     }
 
     @Override
-    @RequestMapping(path = "/authResources", method = RequestMethod.GET)
-    public ArrayList<HashMap<String,String>> findAuthResources() {
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+    @RequestMapping(path = "/feign/authresources", method = RequestMethod.GET)
+    public List<ResourceBriefInfo> findAuthResources() {
+        ResponseResult<List<ResourceBriefInfo>> responseResult = new ResponseResult<>();
+        responseResult.setResponseCode("00000");
+
+        List<ResourceBriefInfo> list = new ArrayList<>();
 
         List<Object[]> result  = sysResourcesRepository.findAuthResources();
         Iterator<Object[]> it = result.iterator();
 
         while(it.hasNext()){
             Object[] o = it.next();
-            HashMap<String,String> map = new HashMap<String,String>();
+            //HashMap<String,String> map = new HashMap<String,String>();
             String resourcePaths = (String)o[0];
             if(resourcePaths.contains(",")){
                 String resourcePath[] = resourcePaths.split(",");
                 for(String rp : resourcePath) {
-                    map.put("resourcePath", rp);
-                    map.put("authorityMark", (String)o[1]);
-                    map.put("globalUniqueId", (String)o[3]);
-                    map.put("requestMethod", (String)o[4]);
-                    list.add(map);
+                    ResourceBriefInfo resourceBriefInfo = new ResourceBriefInfo();
+                    resourceBriefInfo.setResourcePath(rp);
+                    resourceBriefInfo.setAuthorityMark((String)o[1]);
+                    resourceBriefInfo.setGlobalUniqueId((String)o[3]);
+                    resourceBriefInfo.setRequestMethod((String)o[4]);
+                    list.add(resourceBriefInfo);
                 }
             }else {
-                map.put("resourcePath", resourcePaths);
-                map.put("authorityMark", (String)o[1]);
-                map.put("globalUniqueId", (String)o[3]);
-                map.put("requestMethod", (String)o[4]);
-                list.add(map);
+                ResourceBriefInfo resourceBriefInfo = new ResourceBriefInfo();
+                resourceBriefInfo.setResourcePath(resourcePaths);
+                resourceBriefInfo.setAuthorityMark((String)o[1]);
+                resourceBriefInfo.setGlobalUniqueId((String)o[3]);
+                resourceBriefInfo.setRequestMethod((String)o[4]);
+                list.add(resourceBriefInfo);
             }
 
         }
+
+        responseResult.setData(list);
         return list;
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseResult<SysResources> insert(@RequestBody SysResourcesEntity resourcesEntity) {
-        ResponseResult<SysResources> responseResult = new ResponseResult<>();
+    public ResponseResult<SysResourcesEntity> insert(@RequestBody SysResourcesEntity resourcesEntity) {
+        ResponseResult<SysResourcesEntity> responseResult = new ResponseResult<>();
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
@@ -113,7 +119,7 @@ public class ResourceController implements SysResourceServiceApi {
             return responseResult;
         }
 
-        resourcesEntity = sysResourcesRepository.saveAndFlush(resourcesEntity);
+        resourcesEntity = sysResourcesService.saveAndFlush(resourcesEntity);
 
         responseResult.setData(resourcesEntity);
 
@@ -156,7 +162,7 @@ public class ResourceController implements SysResourceServiceApi {
             return responseResult;
         }
 
-        sysResourcesRepository.delete(resourceId);
+        sysResourcesService.delete(resourceId);
 
         return responseResult;
     }
@@ -167,8 +173,7 @@ public class ResourceController implements SysResourceServiceApi {
         responseResult.setResponseCode("00000");
         responseResult.setResponseMsg("");
 
-        List<SysResourcesEntity> resourcesEntityList = sysResourcesService.findAllMenuSysResources();
-        List<MenuModel> menuModels = sysResourcesService.wrapMenu(resourcesEntityList);
+        List<MenuModel> menuModels = sysResourcesService.wrapMenu();
         responseResult.setData(menuModels);
 
         return responseResult;

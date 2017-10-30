@@ -1,6 +1,5 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.SysUsersRoles;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
 import javax.persistence.Column;
@@ -10,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SYS_USERS_ROLES")
-public class SysUsersRolesEntity extends AbstractAuditingEntity implements SysUsersRoles {
+public class SysUsersRolesEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
   @Id

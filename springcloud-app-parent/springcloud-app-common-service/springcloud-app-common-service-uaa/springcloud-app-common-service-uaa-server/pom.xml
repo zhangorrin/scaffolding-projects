@@ -35,6 +35,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
@@ -64,6 +70,11 @@
         <dependency>
             <groupId>orrin.com</groupId>
             <artifactId>springcloud-app-common-service-uaa-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>orrin.com</groupId>
+            <artifactId>springcloud-app-common-service-apigateway-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

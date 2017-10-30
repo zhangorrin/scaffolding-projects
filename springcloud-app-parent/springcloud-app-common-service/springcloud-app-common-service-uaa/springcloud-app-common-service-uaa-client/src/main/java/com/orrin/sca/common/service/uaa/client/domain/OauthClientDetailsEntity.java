@@ -1,13 +1,15 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.OauthClientDetails;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "oauth_client_details")
-public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements OauthClientDetails {
+public class OauthClientDetailsEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -47,7 +49,7 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
   @Column(name = "autoapprove")
   private String autoapprove;
 
-  @Override
+  
   public String getClientId() {
     return clientId;
   }
@@ -56,7 +58,7 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.clientId = clientId;
   }
 
-  @Override
+  
   public String getResourceIds() {
     return resourceIds;
   }
@@ -65,7 +67,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.resourceIds = resourceIds;
   }
 
-  @Override
   public String getClientSecret() {
     return clientSecret;
   }
@@ -74,7 +75,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.clientSecret = clientSecret;
   }
 
-  @Override
   public String getScope() {
     return scope;
   }
@@ -83,7 +83,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.scope = scope;
   }
 
-  @Override
   public String getAuthorizedGrantTypes() {
     return authorizedGrantTypes;
   }
@@ -92,7 +91,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.authorizedGrantTypes = authorizedGrantTypes;
   }
 
-  @Override
   public String getWebServerRedirectUri() {
     return webServerRedirectUri;
   }
@@ -101,7 +99,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.webServerRedirectUri = webServerRedirectUri;
   }
 
-  @Override
   public String getAuthorities() {
     return authorities;
   }
@@ -110,7 +107,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.authorities = authorities;
   }
 
-  @Override
   public String getAccessTokenValidity() {
     return accessTokenValidity;
   }
@@ -119,7 +115,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.accessTokenValidity = accessTokenValidity;
   }
 
-  @Override
   public String getRefreshTokenValidity() {
     return refreshTokenValidity;
   }
@@ -128,7 +123,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.refreshTokenValidity = refreshTokenValidity;
   }
 
-  @Override
   public String getAdditionalInformation() {
     return additionalInformation;
   }
@@ -137,7 +131,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.additionalInformation = additionalInformation;
   }
 
-  @Override
   public String getAutoapprove() {
     return autoapprove;
   }
@@ -146,7 +139,6 @@ public class OauthClientDetailsEntity extends AbstractAuditingEntity  implements
     this.autoapprove = autoapprove;
   }
 
-  @Override
   public String getClientName() {
     return clientName;
   }

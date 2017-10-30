@@ -16,4 +16,10 @@ public interface SysResourcesService {
 	List<SysResourcesEntity> findAllMenuSysResources();
 
 	List<MenuModel> wrapMenu(List<SysResourcesEntity> sysResourcesEntityList);
+
+	List<MenuModel> wrapMenu();
+
+	SysResourcesEntity saveAndFlush(SysResourcesEntity sysResourcesEntity);
+
+	void delete(String resourceId);
 }

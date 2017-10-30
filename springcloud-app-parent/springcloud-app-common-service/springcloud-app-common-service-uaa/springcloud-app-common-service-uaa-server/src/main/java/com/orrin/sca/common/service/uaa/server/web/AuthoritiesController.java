@@ -5,6 +5,7 @@ import com.orrin.sca.common.service.uaa.client.domain.SysResourcesEntity;
 import com.orrin.sca.common.service.uaa.client.service.SysAuthoritiesResourcesService;
 import com.orrin.sca.common.service.uaa.client.vo.AuthoritiesAndResources;
 import com.orrin.sca.common.service.uaa.client.vo.AuthoritiesRequestParams;
+import com.orrin.sca.common.service.uaa.server.core.secure.URLFilterInvocationSecurityMetadataSource;
 import com.orrin.sca.common.service.uaa.server.dao.SysAuthoritiesRepository;
 import com.orrin.sca.component.jpa.dao.Range;
 import com.orrin.sca.component.utils.string.LocalStringUtils;
@@ -27,6 +28,9 @@ public class AuthoritiesController {
 
     @Autowired
     private SysAuthoritiesResourcesService sysAuthoritiesResourcesService;
+
+    @Autowired
+    private URLFilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
 
     @RequestMapping(path = "/list", method = RequestMethod.POST)
     public ResponseResult<Page<SysAuthoritiesEntity>> list(@RequestBody AuthoritiesRequestParams authoritiesRequestParams) {
@@ -124,6 +128,7 @@ public class AuthoritiesController {
         responseResult.setResponseMsg("");
 
         sysAuthoritiesResourcesService.deleteByAuthorityIdAndResourceId(authorityId, resourceId);
+        urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 
         return responseResult;
     }
@@ -184,6 +189,7 @@ public class AuthoritiesController {
         responseResult.setResponseMsg("");
 
         sysAuthoritiesResourcesService.addResourcesUnderAuthoritiy(authorityId, resources);
+        urlFilterInvocationSecurityMetadataSource.refreshResuorceMap();
 
         return responseResult;
     }

@@ -1,6 +1,5 @@
 package com.orrin.sca.common.service.uaa.client.domain;
 
-import com.orrin.sca.common.service.uaa.domain.SysUsers;
 import com.orrin.sca.component.jpa.model.AbstractAuditingEntity;
 
 import javax.persistence.Column;
@@ -11,7 +10,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "SYS_USERS")
-public class SysUsersEntity extends AbstractAuditingEntity implements SysUsers {
+public class SysUsersEntity extends AbstractAuditingEntity {
 
   private static final long serialVersionUID = 1L;
 
