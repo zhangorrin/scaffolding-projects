@@ -51,8 +51,12 @@ security:
 #    password: password
   ignored: /html/**,/css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**,/eureka/**
 
+
+
 logging:
   level:
     root: DEBUG
     java.sql: DEBUG
     com.orrin.: debug
+hystrix:
+  comm

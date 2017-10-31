@@ -4,7 +4,7 @@ import com.orrin.sca.component.jpa.dao.BaseJPARepositoryImpl;
 import com.orrin.sca.component.jpa.parent.ParentApplication;
 import com.orrin.sca.component.privilege.aop.AspectPrivilege;
 import com.orrin.sca.component.privilege.intercept.URLFilterInvocationAuthority;
-import com.orrin.sca.component.redis.cache.RedissonCacheConfig;
+import com.orrin.sca.component.redis.cache.RedisCacheConfig;
 import com.orrin.sca.component.redis.redisson.RedissonConfig;
 import com.orrin.sca.component.session.redis.HttpSessionConfig;
 import com.orrin.sca.framework.core.exception.GlobalWebExceptionHandler;
@@ -17,14 +17,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
-import org.springframework.context.annotation.AdviceMode;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**
@@ -40,9 +36,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 @EntityScan(basePackages = {"com.orrin.sca"})
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaRepositories(repositoryBaseClass = BaseJPARepositoryImpl.class)
-@EnableTransactionManagement
-@EnableCaching(mode = AdviceMode.ASPECTJ)
-@Import({HttpSessionConfig.class, RedissonConfig.class, RedissonCacheConfig.class})
+@EnableCaching
+@Import({HttpSessionConfig.class, RedissonConfig.class, RedisCacheConfig.class})
 public class CommonServiceUaaApplication extends ParentApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CommonServiceUaaApplication.class, args);

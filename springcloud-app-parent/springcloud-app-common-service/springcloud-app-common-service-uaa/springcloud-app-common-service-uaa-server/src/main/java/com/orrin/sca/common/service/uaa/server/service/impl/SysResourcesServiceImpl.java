@@ -7,6 +7,8 @@ import com.orrin.sca.common.service.uaa.client.service.SysResourcesService;
 import com.orrin.sca.common.service.uaa.server.dao.OauthClientDetailsRepository;
 import com.orrin.sca.common.service.uaa.server.dao.SysResourcesRepository;
 import com.orrin.sca.component.menu.MenuModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,6 +29,8 @@ import java.util.Map;
  */
 @Service("sysResourcesService")
 public class SysResourcesServiceImpl implements SysResourcesService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SysResourcesServiceImpl.class);
+
 	@Autowired
 	private SysResourcesRepository sysResourcesRepository;
 
@@ -79,22 +83,23 @@ public class SysResourcesServiceImpl implements SysResourcesService {
 	}
 
 	@Override
-	@Cacheable(value = "menuModels", key = "SYSTEM_MENUS")
+	@Cacheable(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
 	public List<MenuModel> wrapMenu() {
+		LOGGER.info("wrapMenu");
 		List<SysResourcesEntity> resourcesEntityList = this.findAllMenuSysResources();
 		List<MenuModel> menuModels = this.wrapMenu(resourcesEntityList);
 		return menuModels;
 	}
 
 	@Override
-	@CacheEvict(value = "menuModels", key = "SYSTEM_MENUS")
+	@CacheEvict(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
 	@Transactional(rollbackFor = Exception.class)
 	public SysResourcesEntity saveAndFlush(SysResourcesEntity sysResourcesEntity) {
 		return sysResourcesRepository.saveAndFlush(sysResourcesEntity);
 	}
 
 	@Override
-	@CacheEvict(value = "menuModels", key = "SYSTEM_MENUS")
+	@CacheEvict(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(String resourceId) {
 		sysResourcesRepository.delete(resourceId);

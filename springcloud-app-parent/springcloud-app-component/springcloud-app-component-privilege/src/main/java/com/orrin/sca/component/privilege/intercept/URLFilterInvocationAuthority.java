@@ -222,7 +222,9 @@ public class URLFilterInvocationAuthority implements InitializingBean {
 
         RLock lock = redissonClient.getLock(Prefixes.RESOURCE_AND_AUTHORITIES_LOCK.getValue());
         try {
+            long threadId = Thread.currentThread().getId();
             boolean res = lock.tryLock(10, TimeUnit.SECONDS);
+            System.out.println(threadId + ":"+res);
             if(res) {
                 opsForHash.putAll(Prefixes.RESOURCE_AND_AUTHORITIES_SET.getValue(), map);
             }
