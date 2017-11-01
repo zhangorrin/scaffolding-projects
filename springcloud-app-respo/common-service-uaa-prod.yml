@@ -1,4 +1,4 @@
-sys_env: dev
+sys_env: prod
 spring:
   boot:
     admin:

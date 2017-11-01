@@ -1,4 +1,4 @@
-sys_env: dev
+sys_env: test
 spring:
   boot:
     admin:
