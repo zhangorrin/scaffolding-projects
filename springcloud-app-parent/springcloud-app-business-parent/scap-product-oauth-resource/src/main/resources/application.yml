@@ -65,5 +65,31 @@ logging:
     java.sql: DEBUG
     com.orrin.: debug
 
+swagger2:
+  docket:
+    ##扫描报路径
+    basepackage: com.orrin.scab.product.oauth.resource.web
+    ##过滤的路径，支持正则表达式, 可以配置为 *
+    paths: /*
+    ##分组
+    groupName:
+    ##base，最终调用接口后会和paths拼接在一起, 可以配置为 /
+    pathMapping: /
+
+  apiInfo:
+    ##大标题
+    title: business-service-oauth-resource
+    ##描述
+    description: business-service-oauth-resource描述
+    ##
+    termsOfServiceUrl: /
+    ##作者
+    contact_name:  Orrin
+    ##链接显示文字
+    contact_url: /
+    ##邮件地址
+    contact_email:  orrin2008@126.com
+    ##版本
+    version:  1.0.0
 #info:
 #  version: @project.version@

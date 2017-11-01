@@ -46,5 +46,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>orrin.com</groupId>
+            <artifactId>springcloud-app-component-swagger</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 </project>

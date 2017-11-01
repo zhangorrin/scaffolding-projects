@@ -6,7 +6,7 @@
 swagger2:
   docket:
     basepackage: ##扫描报路径
-    paths: ##过滤的路径，支持正则表达式, 可以配置为 * 
+    paths: ##过滤的路径，支持正则表达式, 可以配置为 /* 
     groupName: ##分组
     pathMapping: ##base，最终调用接口后会和paths拼接在一起, 可以配置为 / 
 
@@ -18,6 +18,18 @@ swagger2:
     contact_url:  ##链接显示文字
     contact_email:  ##邮件地址
     version:  ##版本
+```
+
+WebMvcConfigurerAdapter中相关配置
+```java
+    @Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/swagger-ui.html")
+				.addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**")
+				.addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+	}
 ```
 
 ## 2. 使用方法
