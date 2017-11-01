@@ -1,4 +1,4 @@
-sys_env: gitdev
+sys_env: dev
 spring:
   boot:
     admin:

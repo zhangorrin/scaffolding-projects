@@ -19,6 +19,7 @@
         <module>springcloud-app-common-service-turbine</module>
         <module>springcloud-app-common-service-zipkin</module>
         <module>springcloud-app-common-service-file</module>
+        <module>springcloud-app-common-service-config</module>
     </modules>
 
     <dependencies>

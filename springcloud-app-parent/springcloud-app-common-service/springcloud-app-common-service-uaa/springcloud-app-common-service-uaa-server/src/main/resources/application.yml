@@ -1,10 +1,5 @@
+sys_env: local
 spring:
-  application:
-    name: common-service-uaa
-  jpa:
-    show-sql: true
-    properties:
-      jadira.usertype.autoRegisterUserTypes: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -27,36 +22,8 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
-# Define the port where the UAA server would be running
-server:
-  port: 8769
-  # Use different context-path to avoid session cookie overlapping
-  #context-path: /uaa
-  #use-forward-headers: false
-
-# Define the Eureka server that handles service registration
-eureka:
-  instance:
-      hostname: uaa.orrin.com
-      port: 8761
-  client:
-    serviceUrl:
-      defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
-
-# Define security
-security:
-  basic:
-    enabled: false
-#  user:
-#    password: password
-  ignored: /html/**,/css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**,/eureka/**
-
-
-
 logging:
   level:
     root: DEBUG
     java.sql: DEBUG
     com.orrin.: debug
-hystrix:
-  comm
