@@ -32,7 +32,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport implements Initia
 		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 		RedisCacheManager redisCacheManager = new RedisCacheManager(redisTemplate);
 		redisCacheManager.setDefaultExpiration(30000);
-		RedisCachePrefix redisCachePrefix = new DefaultRedisCachePrefix(":cache:");
+		RedisCachePrefix redisCachePrefix = new DefaultRedisCachePrefix(":reidscache:");
 		redisCacheManager.setUsePrefix(true);
 		redisCacheManager.setCachePrefix(redisCachePrefix);
 		return redisCacheManager;

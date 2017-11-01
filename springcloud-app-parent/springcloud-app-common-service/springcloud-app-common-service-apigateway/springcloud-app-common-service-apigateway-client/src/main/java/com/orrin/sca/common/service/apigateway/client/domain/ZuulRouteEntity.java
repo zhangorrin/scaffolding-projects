@@ -35,6 +35,10 @@ public class ZuulRouteEntity extends AbstractAuditingEntity {
     @Column(name = "sensitive_headers")
     private String  sensitiveHeaders;
 
+
+    @Column(name = "custome_sensitive_headers")
+    private Boolean  customeSensitiveHeaders;
+
     @Column(name = "service_name")
     private String serviceName;
 
@@ -100,5 +104,13 @@ public class ZuulRouteEntity extends AbstractAuditingEntity {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public Boolean getCustomeSensitiveHeaders() {
+        return customeSensitiveHeaders;
+    }
+
+    public void setCustomeSensitiveHeaders(Boolean customeSensitiveHeaders) {
+        this.customeSensitiveHeaders = customeSensitiveHeaders;
     }
 }

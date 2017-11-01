@@ -83,7 +83,7 @@ public class SysResourcesServiceImpl implements SysResourcesService {
 	}
 
 	@Override
-	@Cacheable(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
+	@Cacheable(value = "common-service-uaa:menuModels", key = "'system-menus'")
 	public List<MenuModel> wrapMenu() {
 		LOGGER.info("wrapMenu");
 		List<SysResourcesEntity> resourcesEntityList = this.findAllMenuSysResources();
@@ -92,14 +92,14 @@ public class SysResourcesServiceImpl implements SysResourcesService {
 	}
 
 	@Override
-	@CacheEvict(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
+	@CacheEvict(value = "common-service-uaa:menuModels", key = "'system-menus'")
 	@Transactional(rollbackFor = Exception.class)
 	public SysResourcesEntity saveAndFlush(SysResourcesEntity sysResourcesEntity) {
 		return sysResourcesRepository.saveAndFlush(sysResourcesEntity);
 	}
 
 	@Override
-	@CacheEvict(value = "menuModels", key = "'REDIS_CACHE:SYSTEM_MENUS'")
+	@CacheEvict(value = "common-service-uaa:menuModels", key = "'system-menus'")
 	@Transactional(rollbackFor = Exception.class)
 	public void delete(String resourceId) {
 		sysResourcesRepository.delete(resourceId);

@@ -3,11 +3,13 @@ package com.orrin.sca.common.service.apigateway.server;
 import com.orrin.sca.common.service.apigateway.server.filter.PreFilter;
 import com.orrin.sca.component.jpa.dao.BaseJPARepositoryImpl;
 import com.orrin.sca.component.jpa.parent.ParentApplication;
+import com.orrin.sca.component.redis.cache.RedisCacheConfig;
 import com.orrin.sca.component.redis.redisson.RedissonConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
@@ -35,7 +37,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaRepositories(repositoryBaseClass = BaseJPARepositoryImpl.class)
 @EnableTransactionManagement
-@Import({RedissonConfig.class})
+@EnableCaching
+@Import({RedissonConfig.class, RedisCacheConfig.class})
 public class CommonServiceApigatewayApplication extends ParentApplication {
 
 	@Bean
