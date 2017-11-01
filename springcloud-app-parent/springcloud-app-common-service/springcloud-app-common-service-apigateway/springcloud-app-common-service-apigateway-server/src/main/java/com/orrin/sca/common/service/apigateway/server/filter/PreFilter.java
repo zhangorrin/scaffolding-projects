@@ -86,53 +86,37 @@ public class PreFilter extends ZuulFilter {
 
 		if (!StringUtils.hasText(accessToken)) {
 			log.warn("token is empty");
-			/*
-			ctx.setSendZuulResponse(false);
-			ctx.setResponseStatusCode(401);
-			try {
-				ctx.getResponse().getWriter().write("token is empty");
-			} catch (Exception e) {
-
-			}
-			*/
-			return null;
+			responseResult = determineAccessAuthority(null);
 		}else {
-
 			Jwt jwt = JwtHelper.decode(accessToken);
-
-			responseResult = determineAccess(jwt);
-
-			if(responseResult != null && !responseResult.getResponseCode().equalsIgnoreCase("00000")) {
-				ctx.setSendZuulResponse(false);
-				ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-				ctx.setResponseStatusCode(401);
-				ctx.setResponseBody(JacksonUtils.encode(responseResult));
-				ctx.setResponseGZipped(true);
-				/*try {
-					ctx.getResponse().getWriter().write(JacksonUtils.encode(responseResult));
-				} catch (Exception e) {
-
-				}*/
-				return null;
-			}
-
+			responseResult = determineAccessAuthority(jwt);
 		}
 		log.info("ok");
+		if(responseResult != null && !responseResult.getResponseCode().equalsIgnoreCase("00000")) {
+			ctx.setSendZuulResponse(false);
+			ctx.getResponse().setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+			ctx.setResponseStatusCode(401);
+			ctx.setResponseBody(JacksonUtils.encode(responseResult));
+			ctx.setResponseGZipped(true);
+		}
 		return null;
 	}
 
-	protected ResponseResult<?> determineAccess(Jwt jwt) {
-		CoverAccessTokenModel coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
-
+	protected ResponseResult<?> determineAccessAuthority(Jwt jwt) {
 		ResponseResult<?> responseResult = new ResponseResult<>();
 		responseResult.setResponseCode("00000");
 
-		long nowTime = System.currentTimeMillis() / 1000;
+		CoverAccessTokenModel coverAccessTokenModel = null;
+		if(jwt != null) {
+			coverAccessTokenModel = JacksonUtils.decode(jwt.getClaims(), CoverAccessTokenModel.class);
 
-		if(nowTime > coverAccessTokenModel.getExp()){
-			responseResult.setResponseCode("10001");
-			responseResult.setResponseMsg("token is expired !");
-			return responseResult;
+			long nowTime = System.currentTimeMillis() / 1000;
+
+			if(nowTime > coverAccessTokenModel.getExp()){
+				responseResult.setResponseCode("10001");
+				responseResult.setResponseMsg("token is expired !");
+				return responseResult;
+			}
 		}
 
 		RequestContext ctx = RequestContext.getCurrentContext();
@@ -141,7 +125,14 @@ public class PreFilter extends ZuulFilter {
 
 		Collection<ConfigAttribute> attributes = urlFilterInvocationAuthority.getAttributes(route.getPrefix(), request);
 
-		if(attributes != null && attributes.size() > 0 && coverAccessTokenModel.getAuthorities() != null && coverAccessTokenModel.getAuthorities().size() > 0){
+		if(attributes != null && attributes.size() > 0){
+
+			if(coverAccessTokenModel.getAuthorities() == null || coverAccessTokenModel.getAuthorities().size() == 0) {
+				responseResult.setResponseCode("10001");
+				responseResult.setResponseMsg("您可能没有权限使用网络资源 ("+ route.getFullPath() +") !");
+				return responseResult;
+			}
+
 			boolean hasAttribute = false;
 			for(ConfigAttribute ca : attributes) {
 				if(coverAccessTokenModel.getAuthorities().contains(ca.getAttribute())) {
