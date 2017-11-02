@@ -1,8 +1,4 @@
 spring:
-  application:
-    name: business-service-oauth-resource
-  jpa:
-    show-sql: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -21,27 +17,8 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
-  output:
-    ansi:
-      enabled: always
-
-# Define the port where the Widget Foundry server would be running
-server:
-  port: 9003
-
-# Define the Eureka server that handles service registration
-eureka:
-  instance:
-      hostname: www.orrin.com
-      port: 8761
-  client:
-    serviceUrl:
-      defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
-
 # Disable spring basic authentication security
 security:
-  basic:
-    enabled: false
   oauth2:
 #    sso:
 #      login-path: /login
@@ -59,12 +36,6 @@ security:
       id: openid
       serviceId: ${PREFIX:}resource
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-    java.sql: DEBUG
-    com.orrin.: debug
-
 swagger2:
   docket:
     ##扫描报路径
@@ -80,7 +51,7 @@ swagger2:
     ##大标题
     title: business-service-oauth-resource
     ##描述
-    description: business-service-oauth-resource描述
+    description: business-service-oauth-resource描述local环境
     ##
     termsOfServiceUrl: /
     ##作者

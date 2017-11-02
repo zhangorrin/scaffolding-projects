@@ -1,8 +1,4 @@
 spring:
-  application:
-    name: business-service-product
-  jpa:
-    show-sql: true
   boot:
     admin:
       api-path: http://admin.orrin.com:7999
@@ -21,13 +17,6 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
-  output:
-    ansi:
-      enabled: always
-# Define the port where the Widget Foundry server would be running
-server:
-  port: 9001
-
 # Define the Eureka server that handles service registration
 eureka:
   instance:
@@ -39,8 +28,6 @@ eureka:
 
 # Disable spring basic authentication security
 security:
-  basic:
-    enabled: false
   oauth2:
     sso:
       login-path: /login
@@ -57,11 +44,6 @@ security:
           -----END PUBLIC KEY-----
       id: openid
       serviceId: ${PREFIX:}resource
-  ignored: /css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**
-
-logging:
-  level:
-    org.springframework.security: DEBUG
 
 #info:
 #  version: @project.version@

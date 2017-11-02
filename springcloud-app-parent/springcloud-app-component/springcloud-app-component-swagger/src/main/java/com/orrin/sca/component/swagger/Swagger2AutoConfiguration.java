@@ -47,9 +47,9 @@ public class Swagger2AutoConfiguration {
 		logger.info("pathMapping = {}", pathMapping);
 
 		Docket docket =  new Docket(DocumentationType.SWAGGER_2)
-				//.groupName(groupName)
+				.groupName(groupName)
 				.apiInfo(apiInfo())
-				//.pathMapping(pathMapping)// base，最终调用接口后会和paths拼接在一起
+				.pathMapping(pathMapping)// base，最终调用接口后会和paths拼接在一起
 				.select()
 				.apis(RequestHandlerSelectors.basePackage(basepackage))
 				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
