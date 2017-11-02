@@ -26,6 +26,10 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
 
+management:
+  security:
+    enabled: false
+
 # Disable spring basic authentication security
 security:
   oauth2:

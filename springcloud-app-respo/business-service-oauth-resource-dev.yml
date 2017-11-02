@@ -17,6 +17,10 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
+management:
+  security:
+    enabled: false
+
 # Disable spring basic authentication security
 security:
   oauth2:

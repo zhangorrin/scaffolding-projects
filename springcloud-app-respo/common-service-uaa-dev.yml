@@ -22,6 +22,10 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
+management:
+  security:
+    enabled: false
+
 logging:
   level:
     root: DEBUG
