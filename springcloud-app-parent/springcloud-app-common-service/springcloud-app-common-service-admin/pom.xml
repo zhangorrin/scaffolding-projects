@@ -70,7 +70,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.orrin.sca.common.service.admin.SpringBootAdminApplication</mainClass>
+                    <mainClass>com.orrin.sca.common.service.admin.CommonServiceAdminApplication</mainClass>
                     <addResources>false</addResources>
                 </configuration>
             </plugin>

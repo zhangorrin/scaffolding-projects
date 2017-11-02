@@ -2,6 +2,10 @@ spring:
   application:
     name: common-service-zipkin
 
+management:
+  security:
+    enabled: false
+
 # Define the port where the Service Registry server would be running
 server:
   port: 8763
