@@ -1,7 +1,13 @@
 spring:
   boot:
     admin:
-      api-path: http://admin.orrin.com:7999
+      url: http://admin.orrin.com:7999
+      username: admin       #These two are needed so that the client
+      password: pass   #can register at the protected server api
+      client:
+        metadata:
+          user.name: admin         #These two are needed so that the server
+          user.password: pass  #can access the proteceted client endpoints
   zipkin:
     base-url: http://zipkin.orrin.com:8763
 

@@ -4,6 +4,20 @@ spring:
   cloud:
     config:
       enabled: false
+  boot:
+    admin:
+      url: http://admin.orrin.com:${server.port}
+      username: "${security.user.name}"       #These two are needed so that the client
+      password: "${security.user.password}"   #can register at the protected server api
+      client:
+        metadata:
+          user.name: "${security.user.name}"          #These two are needed so that the server
+          user.password: "${security.user.password}" #can access the proteceted client endpoints
+
+security:
+  user:
+    name: admin
+    password: pass
 
 server:
   port: 7999
@@ -13,12 +27,19 @@ eureka:  #<1>
   instance:
     leaseRenewalIntervalInSeconds: 10
     hostname: admin.orrin.com
+    metadata-map:
+      user.name: "${security.user.name}"         #These two are needed so that the server
+      user.password: "${security.user.password}"  #can access the proteceted client endpoints
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
       defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka/
 
-management.security.enabled: false  #<2>
+
+management:
+  context-path: "/actuator"
+#  security:
+#    enabled: false  #<2>
 # end::configuration-eureka[]
 
 # tag::configuration-ui-hystrix[]

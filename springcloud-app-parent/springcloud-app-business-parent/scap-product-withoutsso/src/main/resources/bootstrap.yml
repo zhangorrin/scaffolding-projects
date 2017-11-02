@@ -24,8 +24,11 @@ server:
 # Define the Eureka server that handles service registration
 eureka:
   instance:
-      hostname: www.orrin.com
-      port: 8761
+    hostname: www.orrin.com
+    port: 8761
+    metadata-map:
+      user.name: admin         #These two are needed so that the server
+      user.password: pass  #can access the proteceted client endpoints
   client:
     serviceUrl:
       defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
