@@ -2,13 +2,8 @@ sys_env: dev
 spring:
   boot:
     admin:
-      url: http://admin.orrin.com:7999
       username: admin       #These two are needed so that the client
       password: pass   #can register at the protected server api
-      client:
-        metadata:
-          user.name: admin         #These two are needed so that the server
-          user.password: pass  #can access the proteceted client endpoints
   redis:
     host: localhost
     port: 6379
@@ -28,9 +23,6 @@ spring:
           log-slow-sql: true
           slow-sql-millis: 2000
 
-management:
-  security:
-    enabled: false
 
 logging:
   level:
