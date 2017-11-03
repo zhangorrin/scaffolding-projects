@@ -25,3 +25,9 @@ security:
   user:
     name: admin
     password: pass
+
+logging:
+  level:
+    root: DEBUG
+    java.sql: DEBUG
+    com.orrin.: debug
