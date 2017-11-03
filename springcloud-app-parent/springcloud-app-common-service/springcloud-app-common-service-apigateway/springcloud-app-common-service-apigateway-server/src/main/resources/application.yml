@@ -20,3 +20,14 @@ spring:
           db-type: mysql
           log-slow-sql: true
           slow-sql-millis: 2000
+
+security:
+  user:
+    name: admin
+    password: pass
+
+logging:
+  level:
+    root: DEBUG
+    java.sql: DEBUG
+    com.orrin.: debug

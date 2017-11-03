@@ -35,8 +35,8 @@ import java.util.List;
 /**
  * @author orrin.zhang on 2017/7/28.
  */
-@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
-@Configuration
+//@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
+//@Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 

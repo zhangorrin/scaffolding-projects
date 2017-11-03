@@ -52,8 +52,6 @@ logging:
   level:
     org.springframework.security: DEBUG
 
-
-
 fdfs:
   connect_timeout: 30
   network_timeout: 30

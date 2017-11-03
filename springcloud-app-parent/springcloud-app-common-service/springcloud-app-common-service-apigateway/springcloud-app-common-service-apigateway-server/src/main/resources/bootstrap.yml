@@ -26,7 +26,7 @@ eureka:
     hostname: api.orrin.com
     port: 8761
     metadata-map:
-      user.name: admin         #These two are needed so that the server
+      user.name: admin #These two are needed so that the server
       user.password: pass  #can access the proteceted client endpoints
   client:
     serviceUrl:
@@ -50,6 +50,11 @@ zuul:
       serviceId: common-service-uaa
   add-proxy-headers: true
   sensitive-headers: Cookie,Set-Cookie
+  prefix: /zuul
+
+#management:
+#  security:
+#    enabled: false
 
 #info:
 #  version: @project.version@

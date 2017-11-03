@@ -11,9 +11,9 @@ spring:
           username:
           password:
 
-management:
-  security:
-    enabled: false
+#management:
+#  security:
+#    enabled: false
 
 # Define the port where the Service Registry server would be running
 server:
@@ -24,6 +24,9 @@ server:
 eureka:
   instance:
     port: 8761
+    metadata-map:
+      user.name: "${security.user.name}"         #These two are needed so that the server
+      user.password: "${security.user.password}"  #can access the proteceted client endpoints
   client:
     registerWithEureka: true
     fetchRegistry: false
@@ -31,3 +34,8 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 0
+
+security:
+  user:
+    name: admin
+    password: pass

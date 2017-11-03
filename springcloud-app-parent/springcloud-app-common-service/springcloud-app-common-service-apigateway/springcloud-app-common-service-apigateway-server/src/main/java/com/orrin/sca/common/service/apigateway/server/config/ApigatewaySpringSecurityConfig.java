@@ -1,8 +1,5 @@
 package com.orrin.sca.common.service.apigateway.server.config;
 
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -10,20 +7,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * @author orrin.zhang on 2017/7/28.
  */
-@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
-@Configuration
+//@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
+//@Configuration
 @EnableWebSecurity
 public class ApigatewaySpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity webSecurity) throws Exception {
-		webSecurity.ignoring().antMatchers("/**");
+		webSecurity.ignoring().antMatchers("/zuul/**");
 	}
 
 	/*@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/**").permitAll();
-
+		http.authorizeRequests().antMatchers("/zuul/**").permitAll()
+				.and().authorizeRequests().anyRequest().authenticated();
 		//http.csrf().disable();
 	}*/
 
