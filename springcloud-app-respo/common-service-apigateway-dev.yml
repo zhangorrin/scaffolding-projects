@@ -20,3 +20,8 @@ spring:
           db-type: mysql
           log-slow-sql: true
           slow-sql-millis: 2000
+
+security:
+  user:
+    name: admin
+    password: pass
