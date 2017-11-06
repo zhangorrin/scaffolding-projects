@@ -39,5 +39,5 @@ security:
     enabled: false
 #  user:
 #    password: password
-  ignored: /html/**,/css/**,/js/**,/favicon.ico,/webjars/**,/health/**,/refresh/**,/eureka/**,/env/**,/metrics/**,/dump/**,/jolokia/**,/info/**,/configprops/**,/trace/**,/logfile/**,/flyway/**,/liquibase/**,/heapdump/**,/loggers/**,/auditevents/**,/hystrix.stream/**
+  ignored: /html/**,/css/**,/js/**,/favicon.ico,/webjars/**
 

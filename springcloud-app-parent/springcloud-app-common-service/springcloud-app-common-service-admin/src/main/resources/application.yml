@@ -44,5 +44,12 @@ spring.boot.admin.turbine:
   location: turbine  #<1>
 # end::configuration-ui-turbine[]
 
+logging:
+  level:
+    root: DEBUG
+    java.sql: DEBUG
+    com.orrin.: debug
+
+
 info:
   version: @project.version@
