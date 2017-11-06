@@ -25,10 +25,13 @@ eureka:  #<1>
     metadata-map:
       user.name: "${security.user.name}"         #These two are needed so that the server
       user.password: "${security.user.password}"  #can access the proteceted client endpoints
+      management.context-path: /mgmt
+    health-check-url-path: /mgmt/health
+
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka/
+      defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka
 
 #  security:
 #    enabled: false  #<2>
@@ -53,3 +56,5 @@ logging:
 
 info:
   version: @project.version@
+management:
+  context-path: /mgmt

@@ -4,6 +4,7 @@ spring:
     admin:
       username: admin       #These two are needed so that the client
       password: pass   #can register at the protected server api
+
   redis:
     host: localhost
     port: 6379
@@ -28,3 +29,6 @@ logging:
     root: DEBUG
     java.sql: DEBUG
     com.orrin.: debug
+
+info:
+  version: @project.version@

@@ -28,6 +28,8 @@ eureka:
     metadata-map:
       user.name: admin #These two are needed so that the server
       user.password: pass  #can access the proteceted client endpoints
+      management.context-path: /mgmt
+    health-check-url-path: /mgmt/health
   client:
     serviceUrl:
       defaultZone: http://eureka.orrin.com:${eureka.instance.port}/eureka/
@@ -52,9 +54,9 @@ zuul:
   sensitive-headers: Cookie,Set-Cookie
   prefix: /zuul
 
+management:
+  context-path: /mgmt
+
 #management:
 #  security:
 #    enabled: false
-
-#info:
-#  version: @project.version@

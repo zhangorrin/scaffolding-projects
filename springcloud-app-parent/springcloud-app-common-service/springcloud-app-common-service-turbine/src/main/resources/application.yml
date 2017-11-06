@@ -12,6 +12,9 @@ server:
 eureka:
   instance:
     port: 8761
+    health-check-url-path: /mgmt/health
+    metadata-map:
+      management.context-path: /mgmt
   client:
     registerWithEureka: true
     fetchRegistry: false
@@ -30,6 +33,8 @@ turbine:
 
 info:
   version: @project.version@
+
 management:
   security:
     enabled: false
+  context-path: /mgmt

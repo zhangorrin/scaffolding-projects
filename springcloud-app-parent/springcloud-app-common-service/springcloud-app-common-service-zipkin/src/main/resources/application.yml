@@ -5,6 +5,7 @@ spring:
 management:
   security:
     enabled: false
+  context-path: /mgmt
 
 # Define the port where the Service Registry server would be running
 server:
@@ -15,6 +16,9 @@ server:
 eureka:
   instance:
     port: 8761
+    metadata-map:
+      management.context-path: /mgmt
+    health-check-url-path: /mgmt/health
   client:
     registerWithEureka: true
     fetchRegistry: false
@@ -22,3 +26,7 @@ eureka:
       defaultZone: ${EUREKA_SERVICE_URL:http://eureka.orrin.com:8761}/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 0
+
+
+info:
+  version: @project.version@
