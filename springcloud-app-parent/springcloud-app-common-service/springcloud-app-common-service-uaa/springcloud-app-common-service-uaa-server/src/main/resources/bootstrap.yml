@@ -5,14 +5,14 @@ spring:
     show-sql: true
     properties:
       jadira.usertype.autoRegisterUserTypes: true
-  cloud:
-    config:
-      enabled: true
-      label: master
-      discovery:
-        enabled: true
-        service-id: common-service-config
-      profile: dev
+#  cloud:
+#    config:
+#      enabled: true
+#      label: master
+#      discovery:
+#        enabled: true
+#        service-id: common-service-config
+#      profile: dev
 
 # Define the port where the UAA server would be running
 server:

@@ -1,13 +1,12 @@
 package com.orrin.sca.common.service.uaa.server.core.config;
 
+import com.orrin.sca.common.service.uaa.server.core.oauth.ClientDetailsServiceImpl;
 import com.orrin.sca.common.service.uaa.server.core.secure.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -23,11 +22,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationProcessingFilter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+
+	@Autowired
+	private ClientDetailsServiceImpl clientDetailsService;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -127,12 +134,28 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		return webExpressionVoter;
 	}
 
+	@Autowired
+	private RedisConnectionFactory redisConnectionFactory;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/health", "/securityException/accessDenied").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/oauth/token", "/**");
 		//http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
+
+		DefaultTokenServices tokenServices = new DefaultTokenServices();
+		tokenServices.setTokenStore(new RedisTokenStore(redisConnectionFactory));
+		tokenServices.setSupportRefreshToken(true);
+		tokenServices.setClientDetailsService(clientDetailsService);
+
+		OAuth2AuthenticationManager oauthAuthenticationManager = new OAuth2AuthenticationManager();
+		oauthAuthenticationManager.setResourceId("");
+		oauthAuthenticationManager.setTokenServices(tokenServices);
+		oauthAuthenticationManager.setClientDetailsService(clientDetailsService);
+
+		OAuth2AuthenticationProcessingFilter oapf = new OAuth2AuthenticationProcessingFilter();
+		oapf.setAuthenticationManager(oauthAuthenticationManager);
+		http.addFilterBefore(oapf, BasicAuthenticationFilter.class);
 
 		// 开启默认登录页面
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {

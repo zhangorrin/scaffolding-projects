@@ -41,6 +41,7 @@ security:
 
 logging:
   level:
+    root: debug
     org.springframework.security: DEBUG
     java.sql: DEBUG
     com.orrin.: debug
