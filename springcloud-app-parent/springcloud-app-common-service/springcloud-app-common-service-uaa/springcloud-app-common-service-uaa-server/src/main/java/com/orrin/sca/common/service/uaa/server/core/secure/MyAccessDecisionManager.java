@@ -30,6 +30,9 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 		while(ite.hasNext()){
 			ConfigAttribute ca = ite.next();
 			String needRole = (ca).getAttribute();
+			if("permitAll".equalsIgnoreCase(needRole)){
+				return;
+			}
 			for (GrantedAuthority ga : authentication.getAuthorities()){
 				if (ga.getAuthority().equals(needRole)){
 					return;

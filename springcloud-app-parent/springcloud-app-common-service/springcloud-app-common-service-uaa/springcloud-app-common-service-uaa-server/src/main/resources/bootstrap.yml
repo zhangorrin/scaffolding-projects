@@ -5,14 +5,14 @@ spring:
     show-sql: true
     properties:
       jadira.usertype.autoRegisterUserTypes: true
-#  cloud:
-#    config:
-#      enabled: true
-#      label: master
-#      discovery:
-#        enabled: true
-#        service-id: common-service-config
-#      profile: dev
+  cloud:
+    config:
+      enabled: false
+      label: master
+      discovery:
+        enabled: true
+        service-id: common-service-config
+      profile: dev
 
 # Define the port where the UAA server would be running
 server:
@@ -28,8 +28,9 @@ eureka:
     port: 8761
     metadata-map:
       user.name: admin         #These two are needed so that the server
-      user.password: 123456  #can access the proteceted client endpoints
+      user.password: pass  #can access the proteceted client endpoints
       management.context-path: /mgmt
+      health.path: /mgmt/health
     health-check-url-path: /mgmt/health
 
   client:

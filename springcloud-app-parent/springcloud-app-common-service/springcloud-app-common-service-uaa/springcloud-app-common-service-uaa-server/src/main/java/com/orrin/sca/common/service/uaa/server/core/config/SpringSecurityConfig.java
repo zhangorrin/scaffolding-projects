@@ -61,7 +61,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-
 		//daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 
 		daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
@@ -139,8 +138,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/health", "/securityException/accessDenied").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/oauth/token", "/**");
+
+
+		http.authorizeRequests().antMatchers("/", "/mgmt/health", "/securityException/accessDenied","/login", "/oauth/authorize", "/oauth/confirm_access").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/oauth/token", "/**").permitAll();
 		//http.formLogin().loginPage("/login").permitAll().and().authorizeRequests().anyRequest().authenticated();
 
 		DefaultTokenServices tokenServices = new DefaultTokenServices();
@@ -155,7 +156,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		OAuth2AuthenticationProcessingFilter oapf = new OAuth2AuthenticationProcessingFilter();
 		oapf.setAuthenticationManager(oauthAuthenticationManager);
-		http.addFilterBefore(oapf, BasicAuthenticationFilter.class);
+		//http.addFilterBefore(oapf, BasicAuthenticationFilter.class);
 
 		// 开启默认登录页面
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -168,14 +169,35 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			}
 		}).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
 
-				.and().formLogin().successHandler(athenticationSuccessHandler()).defaultSuccessUrl("/index").failureUrl("/login?error")
+				//.and().requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+				//.and().authorizeRequests().anyRequest().authenticated()
+				//.and().requestMatchers().antMatchers("/mgmt/health")
+				//.and().authorizeRequests().anyRequest().authenticated()
 
-				.and().logout().logoutSuccessUrl("/index").permitAll();
+				.and()
+				//.formLogin().loginPage("/login").permitAll()
+				.formLogin().loginPage("/login")
+				.successHandler(athenticationSuccessHandler())
+				.defaultSuccessUrl("/index")
+				.failureUrl("/login?error")
+				.and()
+				.logout()
+				.logoutSuccessUrl("/index")
+				.permitAll()
+				;
 
 		// 自定义accessDecisionManager访问控制器,并开启表达式语言
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
 				.and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
 
+		// @formatter:off
+		/*http.authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/oauth/token", "/**").permitAll();
+		http.formLogin().loginPage("/login").permitAll()
+				.and().requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
+				.and().authorizeRequests().anyRequest().authenticated()
+				.and().requestMatchers().antMatchers("/mgmt/health")
+				.and().authorizeRequests().anyRequest().permitAll();*/
+		// @formatter:on
 
 		http.csrf().disable();
 
@@ -187,7 +209,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		//auth.userDetailsService(userDetailsService);
 		auth.authenticationProvider(authenticationProvider());
-
 		/*auth.inMemoryAuthentication()
 				.withUser("user").password("password").roles("USER")
 				.and()

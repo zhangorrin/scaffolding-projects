@@ -160,6 +160,10 @@ public class URLFilterInvocationAuthority implements InitializingBean {
             }
         }
 
+        if(attrs == null || attrs.size() == 0){
+            attrs = SecurityConfig.createListFromCommaDelimitedString("permitAll");
+        }
+
         logger.info("URL资源match："+request.getRequestURI()+ " -> " + attrs);
         logger.info("URL资源match execute TimeMillis = {} ", (System.currentTimeMillis() - startTime));
         return attrs;
