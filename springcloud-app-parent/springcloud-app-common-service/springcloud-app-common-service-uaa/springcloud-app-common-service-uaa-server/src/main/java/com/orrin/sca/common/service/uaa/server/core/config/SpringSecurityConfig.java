@@ -156,7 +156,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		OAuth2AuthenticationProcessingFilter oapf = new OAuth2AuthenticationProcessingFilter();
 		oapf.setAuthenticationManager(oauthAuthenticationManager);
-		//http.addFilterBefore(oapf, BasicAuthenticationFilter.class);
+		oapf.setStateless(false);
+		http.addFilterBefore(oapf, BasicAuthenticationFilter.class);
 
 		// 开启默认登录页面
 		http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -172,10 +173,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				//.and().requestMatchers().antMatchers("/login", "/oauth/authorize", "/oauth/confirm_access")
 				//.and().authorizeRequests().anyRequest().authenticated()
 				//.and().requestMatchers().antMatchers("/mgmt/health")
-				//.and().authorizeRequests().anyRequest().authenticated()
+				//.and().authorizeRequests().anyRequest().permitAll()
 
 				.and()
-				//.formLogin().loginPage("/login").permitAll()
+				//.formLogin().loginPage("/login").successHandler(athenticationSuccessHandler()).permitAll()
 				.formLogin().loginPage("/login")
 				.successHandler(athenticationSuccessHandler())
 				.defaultSuccessUrl("/index")
